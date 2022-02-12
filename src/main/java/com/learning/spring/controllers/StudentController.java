@@ -40,7 +40,11 @@ public class StudentController {
     @GetMapping("/show/{id}")
     @PreAuthorize("hasAnyAuthority('users:check','users:write')")
     public String showStudentIndex(@PathVariable("id") int id, Model model) {
-        model.addAttribute("student", studentDAO.showAllInfo(id));
+        Student student = studentDAO.showAllInfo(id);
+        model.addAttribute("student",student);
+        model.addAttribute("subjects",student.getSubjectList());
+        model.addAttribute("reports",student.getReportList());
+        model.addAttribute("reviews",student.getReviewMap());
         LOGGER.debug("show student with " + id);
 
         return "students/showInfo";

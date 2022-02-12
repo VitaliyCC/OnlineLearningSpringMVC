@@ -1,11 +1,16 @@
 package com.learning.spring.models;
 
+import java.util.List;
+
 public class Subject {
     private static Integer countSubjects = 0;
     private Integer subjectID;
     private String subjectName;
     private Integer semester;
     private Integer maxGrade;
+    private List<Task> taskList;
+    private List<ConnectingStudent> connectingStudents;
+    private List<ConnectingTeacher> connectingTeachers;
 
     public Subject() {
     }
@@ -15,6 +20,43 @@ public class Subject {
         this.subjectName = subjectName;
         this.semester = semester;
         this.maxGrade = maxGrade;
+    }
+
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "subjectID=" + subjectID +
+                ", subjectName='" + subjectName + '\'' +
+                ", semester=" + semester +
+                ", maxGrade=" + maxGrade +
+                ", taskList=" + taskList +
+                ", connectingStudents=" + connectingStudents +
+                ", connectingTeachers=" + connectingTeachers +
+                '}';
+    }
+
+    public List<Task> getTaskList() {
+        return taskList;
+    }
+
+    public void setTaskList(List<Task> taskList) {
+        this.taskList = taskList;
+    }
+
+    public List<ConnectingStudent> getConnectingStudents() {
+        return connectingStudents;
+    }
+
+    public void setConnectingStudents(List<ConnectingStudent> connectingStudents) {
+        this.connectingStudents = connectingStudents;
+    }
+
+    public List<ConnectingTeacher> getConnectingTeachers() {
+        return connectingTeachers;
+    }
+
+    public void setConnectingTeachers(List<ConnectingTeacher> connectingTeachers) {
+        this.connectingTeachers = connectingTeachers;
     }
 
     public static Integer getCountSubjects() {

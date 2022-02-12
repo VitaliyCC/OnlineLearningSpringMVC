@@ -1,9 +1,12 @@
 package com.learning.spring.dao;
 
+import com.learning.spring.models.ConnectingStudent;
 import com.learning.spring.models.ConnectingTeacher;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 @Component
 public class ConnectingTeacherDAO {
@@ -24,5 +27,11 @@ public class ConnectingTeacherDAO {
 
     public void save(ConnectingTeacher connectingTeacher) {
 
+    }
+
+    public static ConnectingTeacher parseConnectingTeacher (ResultSet resultSet) throws SQLException {
+        return new ConnectingTeacher(
+                resultSet.getInt(1),
+                resultSet.getInt(2));
     }
 }

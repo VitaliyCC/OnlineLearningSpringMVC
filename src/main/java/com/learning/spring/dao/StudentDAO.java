@@ -64,8 +64,6 @@ public class StudentDAO {
         preparedStatement.setString(4, student.getName());
         preparedStatement.setString(5, student.getPatronymic());
         preparedStatement.executeUpdate();
-
-
         return true;
     }
 
@@ -136,7 +134,19 @@ public class StudentDAO {
             preparedStatementSubjects.setInt(1, student.getStudentId());
 
             resultSet = preparedStatementSubjects.executeQuery();
-            student = parseSubjects(resultSet, student);
+
+            List<Subject> subjectList = new LinkedList();
+
+            try {
+                while (resultSet.next()) {
+                    subjectList.add(SubjectDAO.parseSubject(resultSet));
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            student.setSubjectList(subjectList);
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.error(e);
@@ -197,27 +207,6 @@ public class StudentDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return student;
-    }
-
-    public static Student parseSubjects(ResultSet resultSet, Student student) {
-        List<Subject> subjectList = new LinkedList();
-
-        try {
-            while (resultSet.next()) {
-                subjectList.add(new Subject(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        resultSet.getInt(3),
-                        resultSet.getInt(4)));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        student.setSubjectList(subjectList);
-
         return student;
     }
 

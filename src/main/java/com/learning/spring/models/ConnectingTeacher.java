@@ -36,4 +36,5 @@ public class ConnectingTeacher {
     public void setSubjectId(Integer subjectId) {
         this.subjectId = subjectId;
     }
+
 }

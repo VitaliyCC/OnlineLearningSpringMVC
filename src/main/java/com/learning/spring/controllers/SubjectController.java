@@ -11,13 +11,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
+
 @Controller
 @RequestMapping("/operation/subject")
 public class SubjectController {
 
     private final SubjectDAO subjectDAO;
 
-    private final Logger LOGGER = Logger.getLogger(ReviewDAO.class);
+    private final Logger LOGGER = Logger.getLogger(SubjectController.class);
 
     @Autowired
     public SubjectController(SubjectDAO subjectDAO) {
@@ -27,12 +29,12 @@ public class SubjectController {
     @GetMapping("")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String workingWithSubject(Model model) {
-        model.addAttribute("subject", subjectDAO.showAll());
+        model.addAttribute("subjects", subjectDAO.showAll());
         model.addAttribute("newSubject", new Subject());
 
         LOGGER.debug("Show all Subject");
 
-        return "students/operationsOnStudent";
+        return "subjects/operationsOnSubject";
     }
 
     @GetMapping("/show/{id}")
@@ -41,7 +43,7 @@ public class SubjectController {
         model.addAttribute("subject", subjectDAO.showAllInfo(id));
         LOGGER.debug("Show Subject with " + id);
 
-        return "students/showInfo";
+        return "subjects/showInfo";
     }
 
     @GetMapping("/edit/{id}")
@@ -51,19 +53,23 @@ public class SubjectController {
         model.addAttribute("subject", subject);
         LOGGER.debug("Show Subject  " + subject.toString());
 
-        return "students/editStudent";
+        return "subjects/editSubject";
     }
 
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String addNewSubject(@ModelAttribute("subject") Subject subject) {
 
-        subjectDAO.save(subject);
+        try {
+            subjectDAO.save(subject);
+        } catch (SQLException e) {
+            LOGGER.error("Can`t save new Subject " + e);
+        }
 
         LOGGER.debug("Save new Subject" + subject.toString());
 
 
-        return "redirect:/operation/connectingStudent";
+        return "redirect:/operation/subject";
     }
 
     @PatchMapping("/{id}")
@@ -73,7 +79,7 @@ public class SubjectController {
 
         subjectDAO.update(id, subject);
 
-        return "redirect:/operation/connectingStudent";
+        return "redirect:/operation/subject";
     }
 
     @DeleteMapping("/{id}")
@@ -83,6 +89,6 @@ public class SubjectController {
 
         subjectDAO.delete(id);
 
-        return "redirect:/operation/connectingStudent";
+        return "redirect:/operation/subject";
     }
 }

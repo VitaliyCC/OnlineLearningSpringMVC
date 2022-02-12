@@ -5,6 +5,8 @@ import com.learning.spring.models.Student;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 @Component
 public class ConnectingStudentDAO {
@@ -25,5 +27,10 @@ public class ConnectingStudentDAO {
 
     public void save(ConnectingStudent connectingStudent) {
 
+    }
+    public static ConnectingStudent parseConnectingStudent (ResultSet resultSet) throws SQLException {
+        return new ConnectingStudent(
+                resultSet.getInt(1),
+                resultSet.getInt(2));
     }
 }
