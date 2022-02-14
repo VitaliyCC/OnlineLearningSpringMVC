@@ -2,15 +2,25 @@ package com.learning.spring.models;
 
 public class ConnectingStudent {
     private static Integer cuntConnecting=0;
+    private Integer id;
     private Integer studentId;
     private Integer subjectId;
 
     public ConnectingStudent() {
     }
 
-    public ConnectingStudent(Integer studentId, Integer subjectId) {
+    public ConnectingStudent(Integer id, Integer studentId, Integer subjectId) {
+        this.id = id;
         this.studentId = studentId;
         this.subjectId = subjectId;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public static Integer getCuntConnecting() {
@@ -35,5 +45,14 @@ public class ConnectingStudent {
 
     public void setSubjectId(Integer subjectId) {
         this.subjectId = subjectId;
+    }
+
+    @Override
+    public String toString() {
+        return "ConnectingStudent{" +
+                "id=" + id +
+                ", studentId=" + studentId +
+                ", subjectId=" + subjectId +
+                '}';
     }
 }
