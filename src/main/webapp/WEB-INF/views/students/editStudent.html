@@ -11,39 +11,54 @@
 <div th:insert="templates/nav :: copy"></div>
 <div class="container mt-3">
     <form th:method="PATCH" th:action="@{/operation/student/{id}(id=${student.getStudentId()})}" th:object="${student}"
-          class="was-validated">
+          class="needs-validation" novalidate>
         <div class="mb-3 mt-3">
             <label for="name" class="form-label">Enter name: </label>
-            <input type="text" th:field="*{name}" id="name" class="form-control" required minlength="2" maxlength="15"/>
+            <input type="text" th:field="*{name}" id="name" class="form-control" required minlength="4" maxlength="15"/>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill this field correctly.</div>
         </div>
         <div class="mb-3">
             <label for="surname" class="form-label">Enter surname: </label>
-            <input type="text" th:field="*{surname}" id="surname" class="form-control" required minlength="2"
+            <input type="text" th:field="*{surname}" id="surname" class="form-control" required minlength="4"
                    maxlength="15"/>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill this field correctly.</div>
         </div>
         <div class="mb-3">
             <label for="patronymic" class="form-label">Enter patronymic: </label>
-            <input type="text" th:field="*{patronymic}" id="patronymic" class="form-control" required minlength="2"
+            <input type="text" th:field="*{patronymic}" id="patronymic" class="form-control" required minlength="4"
                    maxlength="20"/>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill this field correctly.</div>
         </div>
         <div class="mb-3">
             <label for="username" class="form-label">Enter username: </label>
-            <input type="text" th:field="*{login}" id="username" class="form-control" size="30" required/> <!--fix-->
+            <input type="text" th:field="*{login}" id="username" class="form-control"  required minlength="5"
+                   maxlength="20"/> <!--fix-->
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill this field correctly.</div>
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Enter password: </label>
-            <input type="password" th:field="*{password}" id="password" class="form-control" size="30" required/> <!--fix-->
+            <input type="password" th:field="*{password}" id="password" class="form-control"  required minlength="5"
+                   maxlength="20"/> <!--fix-->
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill this field correctly.</div>
         </div>
 
         <div class="mb-3">
             <!--fix-show selected-->
-            <label for="role" class="form-label">Enter faculty: </label>
-            <input class="form-control" list="browsers" id="role" th:field="*{role}">
+            <label for="role" class="form-label">Enter role: </label>
+            <input class="form-control" list="browsers" id="role" th:field="*{role}"
+                   required pattern="STUDENT|TEACHER|ADMIN"/> <!--fix-->
             <datalist id="browsers">
                 <option VALUE="STUDENT">
                 <option value="TEACHER">
                 <option value="ADMIN">
             </datalist>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill this field correctly.</div>
         </div>
 
         <button type="submit" class="btn btn-primary">Update student</button>
@@ -55,6 +70,26 @@
         <button type="submit" class="btn btn-outline-danger">Delete student</button>
     </form>
 </div>
-
+<div th:insert="templates/footer :: copy"></div>
+<script>
+    // Disable form submissions if there are invalid fields
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Get the forms we want to add validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
 </body>
 </html>
