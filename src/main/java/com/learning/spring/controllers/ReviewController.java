@@ -1,7 +1,6 @@
 package com.learning.spring.controllers;
 
 import com.learning.spring.dao.ReviewDAO;
-import com.learning.spring.models.Report;
 import com.learning.spring.models.Review;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +26,12 @@ public class ReviewController {
     @GetMapping("")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String workingWithReview(Model model) {
-        model.addAttribute("review", reviewDAO.showAll());
+        model.addAttribute("reviews", reviewDAO.showAll());
         model.addAttribute("newReview", new Review());
 
         LOGGER.debug("Show all Review");
 
-        return "students/operationsOnStudent";
+        return "reviews/operationsOnReview";
     }
 
     @GetMapping("/show/{id}")
@@ -41,7 +40,7 @@ public class ReviewController {
         model.addAttribute("review", reviewDAO.showAllInfo(id));
         LOGGER.debug("Show Review with " + id);
 
-        return "students/showInfo";
+        return "reviews/showInfo";
     }
 
     @GetMapping("/edit/{id}")
@@ -51,7 +50,7 @@ public class ReviewController {
         model.addAttribute("review", review);
         LOGGER.debug("Show Review  " + review.toString());
 
-        return "students/editStudent";
+        return "reviews/editReview";
     }
 
     @PostMapping("/add")
@@ -63,7 +62,7 @@ public class ReviewController {
         LOGGER.debug("Save new Review" + review.toString());
 
 
-        return "redirect:/operation/connectingStudent";
+        return "redirect:/operation/review";
     }
 
     @PatchMapping("/{id}")
@@ -73,7 +72,7 @@ public class ReviewController {
 
         reviewDAO.update(id, review);
 
-        return "redirect:/operation/connectingStudent";
+        return "redirect:/operation/review";
     }
 
     @DeleteMapping("/{id}")
@@ -83,6 +82,6 @@ public class ReviewController {
 
         reviewDAO.delete(id);
 
-        return "redirect:/operation/connectingStudent";
+        return "redirect:/operation/review";
     }
 }
