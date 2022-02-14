@@ -40,7 +40,11 @@ public class SubjectController {
     @GetMapping("/show/{id}")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String showSubjectIndex(@PathVariable("id") int id, Model model) {
-        model.addAttribute("subject", subjectDAO.showAllInfo(id));
+        Subject subject = subjectDAO.showAllInfo(id);
+        model.addAttribute("subject", subject);
+        model.addAttribute("students",subject.getConnectingStudents());
+        model.addAttribute("teachers",subject.getConnectingTeachers());
+        model.addAttribute("tasks",subject.getTaskList());
         LOGGER.debug("Show Subject with " + id);
 
         return "subjects/showInfo";
