@@ -88,14 +88,16 @@ Create table Review (
 Create table Connecting_Student (
                                     student_id Integer NOT NULL ,
                                     subject_id Integer Default -1 NOT NULL ,
-                                    primary key (student_id,subject_id)
+                                    id Integer NOT NULL ,
+                                    primary key (student_id,subject_id,id)
 )
 /
 
 Create table Connecting_Teacher (
                                     teacher_id Integer NOT NULL ,
                                     subject_id Integer Default -1 NOT NULL ,
-                                    primary key (teacher_id,subject_id)
+                                    id Integer NOT NULL ,
+                                    primary key (teacher_id,subject_id,id)
 )
 /
 
@@ -151,6 +153,7 @@ Alter table Report add  foreign key (task_name) references Task (task_name)  on 
 Alter table Review add  foreign key (report_id) references Report (report_id)  on delete cascade
 /
 
+
 -------------------------------
 INSERT INTO Iogin_info (id, password, username, role)
 VALUES (1, '$2a$12$Kvc6ZRhW.fZYTc4w9mRIA.yCjVGUs0ie.jgm4K.16Ktl.AktqWf.m', 'VITALIIS', 'STUDENT');
@@ -167,10 +170,10 @@ VALUES (0, 2, 'PETRO', 'STEPANENCO');
 
 INSERT INTO SUBJECT (subject_id, subject_name, semester, max_grade)
 VALUES (0, 'ACADEMIC INTEGRITY', 4, 100);
-INSERT INTO Connecting_Teacher (teacher_id, subject_id)
-VALUES (0, 0);
-INSERT INTO Connecting_Student (student_id, subject_id)
-VALUES (0, 0);
+INSERT INTO Connecting_Teacher (id,teacher_id, subject_id)
+VALUES (0,0, 0);
+INSERT INTO Connecting_Student (id,student_id, subject_id)
+VALUES (0,0, 0);
 INSERT INTO TASK (TASK_NAME, SUBJECT_ID, SUBJECT, MAX_GRADE)
 VALUES ('LAB#1', 0, 'https://mix.sumdu.edu.ua/2_ERD.pdf', '10');
 
@@ -186,8 +189,8 @@ delete from Connecting_Student
 where subject_id is not null ;
 delete from SUBJECT where SUBJECT_ID =0;
 select *
-from Review;
-where student_id = 0;
+from Connecting_Student;
+
 select *
 from Review
 where report_id = 0;
@@ -209,3 +212,24 @@ delete from Iogin_info where id =0;
 
 UPDATE Students set  ID=?, SURNAME=?, NAME=?, PATRONYMIC=? where student_id =?;
 
+INSERT INTO STUDENTS (STUDENT_ID, ID, SURNAME, NAME, PATRONYMIC) VALUES ('5', '2', 'SAVOSTIA', 'VITALI', 'V');
+INSERT INTO STUDENTS (STUDENT_ID, ID, SURNAME, NAME, PATRONYMIC) VALUES ('6', '3', 'SAVOSTIAN', 'VITALIY', 'V');
+INSERT INTO STUDENTS (STUDENT_ID, ID, SURNAME, NAME, PATRONYMIC) VALUES ('7', '4', 'SAVOSTIAN', 'VITALIY', 'V');
+INSERT INTO STUDENTS (STUDENT_ID, ID, SURNAME, NAME, PATRONYMIC) VALUES ('8', '5', 'SAVOSTIAN', 'VITALIY', 'V');
+INSERT INTO STUDENTS (STUDENT_ID, ID, SURNAME, NAME, PATRONYMIC) VALUES ('9', '6', 'SAVOSTIAN', 'VITALIY', 'V');
+INSERT INTO STUDENTS (STUDENT_ID, ID, SURNAME, NAME, PATRONYMIC) VALUES ('10', '7', 'SAVOSTIAN', 'VITALIY', 'V');
+INSERT INTO STUDENTS (STUDENT_ID, ID, SURNAME, NAME, PATRONYMIC) VALUES ('11', '8', 'SAVOSTIAN', 'VITALIY', 'V');
+INSERT INTO STUDENTS (STUDENT_ID, ID, SURNAME, NAME, PATRONYMIC) VALUES ('12', '9', 'SAVOSTIAN', 'VITALIY', 'V');
+INSERT INTO STUDENTS (STUDENT_ID, ID, SURNAME, NAME, PATRONYMIC) VALUES ('13', '10', 'SAVOSTIAN', 'VITALIY', 'V');
+INSERT INTO STUDENTS (STUDENT_ID, ID, SURNAME, NAME, PATRONYMIC) VALUES ('14', '11', 'SAVOSTIAN', 'VITALIY', 'V');
+INSERT INTO STUDENTS (STUDENT_ID, ID, SURNAME, NAME, PATRONYMIC) VALUES ('15', '1', 'SAVOSTIAN', 'VITALIY', 'V');
+INSERT INTO STUDENTS (STUDENT_ID, ID, SURNAME, NAME, PATRONYMIC) VALUES ('15', '1', 'SAVOSTIAN', 'VITALIY', 'V');
+commit ;
+INSERT INTO Iogin_info (id, password, username, role) VALUES (4, '$2a$12$5FW3nAcugaWNuKTK/cxQE.HEykTAjJzUMPIrFW4MR1hJVat9Kd3OS', 'VITALIIT', 'TEACHER');
+INSERT INTO Iogin_info (id, password, username, role) VALUES (5, '$2a$12$5FW3nAcugaWNuKTK/cxQE.HEykTAjJzUMPIrFW4MR1hJVat9Kd3OS', 'VITALIIT', 'TEACHER');
+INSERT INTO Iogin_info (id, password, username, role) VALUES (6, '$2a$12$5FW3nAcugaWNuKTK/cxQE.HEykTAjJzUMPIrFW4MR1hJVat9Kd3OS', 'VITALIIT', 'TEACHER');
+INSERT INTO Iogin_info (id, password, username, role) VALUES (7, '$2a$12$5FW3nAcugaWNuKTK/cxQE.HEykTAjJzUMPIrFW4MR1hJVat9Kd3OS', 'VITALIIT', 'TEACHER');
+INSERT INTO Iogin_info (id, password, username, role) VALUES (8, '$2a$12$5FW3nAcugaWNuKTK/cxQE.HEykTAjJzUMPIrFW4MR1hJVat9Kd3OS', 'VITALIIT', 'TEACHER');
+INSERT INTO Iogin_info (id, password, username, role) VALUES (9, '$2a$12$5FW3nAcugaWNuKTK/cxQE.HEykTAjJzUMPIrFW4MR1hJVat9Kd3OS', 'VITALIIT', 'TEACHER');
+INSERT INTO Iogin_info (id, password, username, role) VALUES (10, '$2a$12$5FW3nAcugaWNuKTK/cxQE.HEykTAjJzUMPIrFW4MR1hJVat9Kd3OS', 'VITALIIT', 'TEACHER');
+INSERT INTO Iogin_info (id, password, username, role) VALUES (11, '$2a$12$5FW3nAcugaWNuKTK/cxQE.HEykTAjJzUMPIrFW4MR1hJVat9Kd3OS', 'VITALIIT', 'TEACHER');
