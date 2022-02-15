@@ -1,24 +1,75 @@
 package com.learning.spring.models;
 
+import java.util.List;
+
 public class Teacher {
     private static Integer countTeacher=0;
     private Integer teacherId;
     private Integer id;
     private String surname;
     private String name;
-    private Integer salary;
     private String patronymic;
+    private Integer salary;
+    private String login;
+    private String password;
+    private String role;
+    private List<Subject> subjectList;
+    private List<Review> reviewList;
 
     public Teacher() {
     }
 
-    public Teacher(Integer teacherId, Integer id, String surname, String name, Integer salary, String patronymic) {
+    public Teacher(Integer id, Integer teacherId,  String surname, String name,
+                   Integer salary, String patronymic,String password,  String login,  String role) {
         this.teacherId = teacherId;
         this.id = id;
         this.surname = surname;
         this.name = name;
-        this.salary = salary;
         this.patronymic = patronymic;
+        this.salary = salary;
+        this.login = login;
+        this.password = password;
+        this.role = role;
+    }
+
+    public List<Subject> getSubjectList() {
+        return subjectList;
+    }
+
+    public void setSubjectList(List<Subject> subjectList) {
+        this.subjectList = subjectList;
+    }
+
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public static Integer getCountTeacher() {
@@ -77,7 +128,18 @@ public class Teacher {
         this.patronymic = patronymic;
     }
 
-    public void save(Teacher teacher) {
-
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "teacherId=" + teacherId +
+                ", id=" + id +
+                ", surname='" + surname + '\'' +
+                ", name='" + name + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", salary=" + salary +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                '}';
     }
 }

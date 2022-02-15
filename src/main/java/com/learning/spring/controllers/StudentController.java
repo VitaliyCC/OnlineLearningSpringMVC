@@ -62,7 +62,7 @@ public class StudentController {
 
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String addNewSudent(@ModelAttribute("student") Student student) {
+    public String addNewStudent(@ModelAttribute("student") Student student) {
         User user = null;
         try {
             studentDAO.save(student);
@@ -74,7 +74,7 @@ public class StudentController {
         }
 
         LOGGER.debug("Save new Student" + student.toString());
-        LOGGER.debug("Save new Student" + user.toString());
+        LOGGER.debug("Save new user" + user.toString());
 
         return "redirect:/operation/student";
     }

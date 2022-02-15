@@ -137,13 +137,8 @@ public class StudentDAO {
 
             List<Subject> subjectList = new LinkedList();
 
-            try {
-                while (resultSet.next()) {
-                    subjectList.add(SubjectDAO.parseSubject(resultSet));
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
+            while (resultSet.next()) {
+                subjectList.add(SubjectDAO.parseSubject(resultSet));
             }
 
             student.setSubjectList(subjectList);
