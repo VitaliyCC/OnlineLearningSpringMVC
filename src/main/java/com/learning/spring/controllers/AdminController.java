@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
+
 @Controller
 @RequestMapping("/operation/admin")
 public class AdminController {
@@ -56,7 +58,7 @@ public class AdminController {
 
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String addNewAdmin(@ModelAttribute("admin") Admin admin) {
+    public String addNewAdmin(@ModelAttribute("admin") Admin admin) throws SQLException {
 
         adminDAO.save(admin);
 

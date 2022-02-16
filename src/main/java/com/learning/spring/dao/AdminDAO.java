@@ -1,14 +1,14 @@
 package com.learning.spring.dao;
 
 import com.learning.spring.models.Admin;
+import com.learning.spring.models.Teacher;
+import com.learning.spring.security.model.User;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,39 +16,116 @@ import java.util.Objects;
 public class AdminDAO {
     private final Logger LOGGER = Logger.getLogger(AdminDAO.class);
 
-    public List<Admin> showAll(){
-        return null;
+    public List<Admin> showAll() {
+        List<Admin> admins = new LinkedList<>();
+
+        try (
+                Connection connection = JDBC.getInstance().getConnection();
+                Statement statement = connection.createStatement();
+        ) {
+            statement.execute("SELECT * from ADMIN NATURAL JOIN Iogin_info");
+            ResultSet resultSet = statement.getResultSet();
+
+            while (resultSet.next()) {
+                admins.add(parseAdmin(resultSet));
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        }
+
+        return admins;
     }
-    public Admin showAllInfo(Integer id){
+
+    public Admin showAllInfo(Integer id) {
         Admin admin = null;
         try (Connection connection = JDBC.getInstance().getConnection();
              PreparedStatement preparedStatement =
-                     connection.prepareStatement("SELECT * FROM ADMIN where id = ?");
+                     connection.prepareStatement("SELECT * from ADMIN NATURAL JOIN Iogin_info where admin_id = ?");
         ) {
 
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            admin = new Admin(
-                    resultSet.getInt("admin_id"),
-                    resultSet.getInt("id"),
-                    resultSet.getString("name"),
-                    resultSet.getString("patronymic"),
-                    resultSet.getString("surname"));
+            admin = parseAdmin(resultSet);
 
         } catch (SQLException e) {
 
         }
         return admin;
     }
-    public Boolean update(Integer id, Admin admin){
-        return true;
-    }
-    public Boolean delete(Integer id){
+
+    public Boolean update(Integer id, Admin admin) {
+        try (Connection connection = JDBC.getInstance().getConnection();
+
+             PreparedStatement preparedStatementStudent =
+                     connection.prepareStatement("UPDATE Admin set  name=?,surname=?, patronymic=? where admin_id =?");
+        ) {
+            preparedStatementStudent.setString(1, admin.getName());
+            preparedStatementStudent.setString(2, admin.getSurname());
+            preparedStatementStudent.setString(3, admin.getPatronymic());
+            preparedStatementStudent.setInt(4, id);
+
+            preparedStatementStudent.executeUpdate();
+
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        }
         return true;
     }
 
-    public void save(Admin admin) {
+    public Boolean delete(Integer id) {
+        try (Connection connection = JDBC.getInstance().getConnection();
+             PreparedStatement preparedStatementStudent =
+                     connection.prepareStatement("delete from Admin where admin_id =?");
+        ) {
 
+            preparedStatementStudent.setInt(1, id);
+            preparedStatementStudent.execute();
+
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        }
+        return true;
+    }
+
+    public Boolean save(Admin admin) throws SQLException {
+        Connection connection = JDBC.getInstance().getConnection();
+        PreparedStatement preparedStatement =
+                connection.prepareStatement("INSERT INTO ADMIN (admin_id, id, name, surname, patronymic) VALUES (?, ?, ?, ?, ?)");
+
+        Statement statementForAdmin = connection.createStatement();
+        Statement statementForUser = connection.createStatement();
+
+        ResultSet resultSet = statementForAdmin.executeQuery("SELECT MAX(admin_id) FROM ADMIN");
+        resultSet.next();
+        Admin.setCountAdmins(resultSet.getInt(1) + 1);
+
+        resultSet = statementForUser.executeQuery("SELECT MAX(ID) FROM Iogin_info");
+        resultSet.next();
+        User.setCountUsers(resultSet.getInt(1) + 1);
+
+        preparedStatement.setInt(1, Admin.getCountAdmins());
+        preparedStatement.setInt(2, User.getCountUsers());
+        preparedStatement.setString(3, admin.getName());
+        preparedStatement.setString(4, admin.getSurname());
+        preparedStatement.setString(5, admin.getPatronymic());
+
+        System.out.println(Admin.getCountAdmins()+""+ User.getCountUsers()+""+admin.getName()+""+admin.getSurname()+""+admin.getPatronymic());
+        preparedStatement.executeUpdate();
+        return true;
+    }
+
+    private static Admin parseAdmin(ResultSet resultSet) throws SQLException {
+        return new Admin(
+                resultSet.getInt(1),
+                resultSet.getInt(2),
+                resultSet.getString(3),
+                resultSet.getString(4),
+                resultSet.getString(5),
+                resultSet.getString(6),
+                resultSet.getString(7),
+                resultSet.getString(8)
+        );
     }
 }
