@@ -32,27 +32,26 @@ public class StudentController {
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String workingWithStudent(Model model) {
         model.addAttribute("students", studentDAO.showAll());
-        model.addAttribute("newStudent", new Student());
         LOGGER.debug("show all students");
         return "students/operationsOnStudent";
     }
 
-    @GetMapping("/show/{id}")
+    @GetMapping("/show")
     @PreAuthorize("hasAnyAuthority('users:check','users:write')")
-    public String showStudentIndex(@PathVariable("id") int id, Model model) {
+    public String showStudentIndex(@RequestParam("id") int id, Model model) {
         Student student = studentDAO.showAllInfo(id);
-        model.addAttribute("student",student);
-        model.addAttribute("subjects",student.getSubjectList());
-        model.addAttribute("reports",student.getReportList());
-        model.addAttribute("reviews",student.getReviewMap());
+        model.addAttribute("student", student);
+        model.addAttribute("subjects", student.getSubjectList());
+        model.addAttribute("reports", student.getReportList());
+        model.addAttribute("reviews", student.getReviewMap());
         LOGGER.debug("show student with " + id);
 
         return "students/showInfo";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/edit")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String editStudentIndex(@PathVariable("id") int id, Model model) {
+    public String editStudentIndex(@RequestParam("id") int id, Model model) {
         Student student = studentDAO.showAllInfo(id);
         model.addAttribute("student", student);
         LOGGER.debug("Show student  " + student.toString());
@@ -62,11 +61,19 @@ public class StudentController {
 
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String addNewStudent(@ModelAttribute("student") Student student) {
-        User user = null;
+    public String addNewStudent(@RequestParam("name") String name,
+                                @RequestParam("surname") String surname,
+                                @RequestParam("patronymic") String patronymic,
+                                @RequestParam("login") String login,
+                                @RequestParam("password") String password) {
+        Student student = new Student();
+        student.setName(name);
+        student.setSurname(surname);
+        student.setPatronymic(patronymic);
+
+        User user = new User(login, password, Role.STUDENT);
         try {
             studentDAO.save(student);
-            user = new User(student.getLogin(), student.getPassword(), Role.STUDENT);
             userDAO.save(user);
         } catch (SQLException e) {
             LOGGER.error("Save Student");
@@ -79,16 +86,25 @@ public class StudentController {
         return "redirect:/operation/student";
     }
 
-    @PatchMapping("/{id}")
+    @PostMapping("/edit")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String updateStudent(@ModelAttribute("student") Student student, @PathVariable("id") int id) {
-        Student temp = studentDAO.showAllInfo(id);
+    public String updateStudent(@RequestParam("name") String name,
+                                @RequestParam("surname") String surname,
+                                @RequestParam("patronymic") String patronymic,
+                                @RequestParam("login") String login,
+                                @RequestParam("password") String password,
+                                @RequestParam("role") String role,
+                                @RequestParam("id") int id) {
+
+        Student student = new Student();
+        student.setName(name);
+        student.setSurname(surname);
+        student.setPatronymic(patronymic);
 
         User user = new User();
-        user.setId(temp.getId());
-        user.setLogin(student.getLogin());
-        user.setPassword(student.getPassword());
-        user.setRoleString(student.getRole());
+        user.setPassword(password);
+        user.setLogin(login);
+        user.setRoleString(role);
 
         LOGGER.debug("Update student" + student.toString());
         LOGGER.debug("Update user" + user.toString());
@@ -99,9 +115,9 @@ public class StudentController {
         return "redirect:/operation/student";
     }
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String deleteStudent(@PathVariable("id") int id) {
+    public String deleteStudent(@RequestParam("id") int id) {
         int temp = studentDAO.showAllInfo(id).getId();
 
         LOGGER.debug("Delete student N" + id);

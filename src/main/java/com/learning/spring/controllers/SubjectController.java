@@ -30,29 +30,26 @@ public class SubjectController {
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String workingWithSubject(Model model) {
         model.addAttribute("subjects", subjectDAO.showAll());
-        model.addAttribute("newSubject", new Subject());
 
         LOGGER.debug("Show all Subject");
 
         return "subjects/operationsOnSubject";
     }
 
-    @GetMapping("/show/{id}")
+    @GetMapping("/show")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String showSubjectIndex(@PathVariable("id") int id, Model model) {
+    public String showSubjectIndex(@RequestParam("id") int id, Model model) {
         Subject subject = subjectDAO.showAllInfo(id);
         model.addAttribute("subject", subject);
-        model.addAttribute("students",subject.getConnectingStudents());
-        model.addAttribute("teachers",subject.getConnectingTeachers());
-        model.addAttribute("tasks",subject.getTaskList());
+
         LOGGER.debug("Show Subject with " + id);
 
         return "subjects/showInfo";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/edit")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String editSubject(@PathVariable("id") int id, Model model) {
+    public String editSubject(@RequestParam("id") int id, Model model) {
         Subject subject = subjectDAO.showAllInfo(id);
         model.addAttribute("subject", subject);
         LOGGER.debug("Show Subject  " + subject.toString());
@@ -76,9 +73,9 @@ public class SubjectController {
         return "redirect:/operation/subject";
     }
 
-    @PatchMapping("/{id}")
+    @PostMapping("/update")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String updateSubject(@ModelAttribute("subject") Subject subject, @PathVariable("id") int id) {
+    public String updateSubject(@ModelAttribute("subject") Subject subject, @RequestParam("id") int id) {
         LOGGER.debug("Update Subject" + subject.toString());
 
         subjectDAO.update(id, subject);
@@ -86,9 +83,9 @@ public class SubjectController {
         return "redirect:/operation/subject";
     }
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String deleteSubject(@PathVariable("id") int id) {
+    public String deleteSubject(@RequestParam("id") int id) {
         LOGGER.debug("Delete Subject N" + id);
 
         subjectDAO.delete(id);

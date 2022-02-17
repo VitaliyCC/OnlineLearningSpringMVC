@@ -12,6 +12,7 @@ import com.learning.spring.dao.AdminDAO;
 import com.learning.spring.security.dao.UserDAO;
 import com.learning.spring.security.model.Role;
 import com.learning.spring.security.model.User;
+import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
@@ -33,25 +34,30 @@ public class DefaultController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         User user = userDAO.findByUsername(currentPrincipalName);
-
+        ModelAndView mav=null;
         if (user.getRole().equals(Role.STUDENT)) {
             LOGGER.debug("student logged in");
             LOGGER.debug(user);
             LOGGER.debug("redirecting to /students/id");
 
-            return "/hello/students";
+            //return "/hello/students";
         } else if (user.getRole().equals(Role.TEACHER)) {
             //model.addAttribute("admin", adminDAO.getAdminById(user.getId()));
             LOGGER.debug("admin logged in");
             LOGGER.debug(user);
 
-            return "/hello/teachers";
+           // return "/hello/teachers";
         } else {
             model.addAttribute("admin", adminDAO.showAllInfo(user.getId()));
+           // mav = new ModelAndView("hello/admins");
+           // mav.addObject("admin", adminDAO.showAllInfo(user.getId()));
             LOGGER.debug("admin logged in");
             LOGGER.debug(user);
-            return "hello/admins";
+
+           // return "hello/admins";
         }
+
+        return "hello/admins";
     }
 
 }
