@@ -35,29 +35,26 @@ public class TeacherController {
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String workingWithTeacher(Model model) {
         model.addAttribute("teachers", teacherDAO.showAll());
-        model.addAttribute("newTeacher", new Teacher());
 
         LOGGER.debug("Show all Teacher");
 
         return "teachers/operationsOnTeacher";
     }
 
-    @GetMapping("/show/{id}")
-    @PreAuthorize("hasAnyAuthority('users:write')")
-    public String showTeacherIndex(@PathVariable("id") int id, Model model) {
+    @GetMapping("/show")
+    @PreAuthorize("hasAnyAuthority('users:write','users:read','users:check')")
+    public String showTeacherIndex(@RequestParam("id") int id, Model model) {
         Teacher teacher = teacherDAO.showAllInfo(id);
         model.addAttribute("teacher",teacher);
-        model.addAttribute("subjects",teacher.getSubjectList());
-        model.addAttribute("reviews",teacher.getReviewList());
 
         LOGGER.debug("show teacher with " + id);
         LOGGER.debug("show teacher with " + teacher.toString());
         return "teachers/showInfo";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/edit")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String editTeacher(@PathVariable("id") int id, Model model) {
+    public String editTeacher(@RequestParam("id") int id, Model model) {
         Teacher teacher = teacherDAO.showAllInfo(id);
         model.addAttribute("teacher", teacher);
         LOGGER.debug("Show Teacher  " + teacher.toString());
@@ -72,7 +69,7 @@ public class TeacherController {
         User user = null;
         try {
             teacherDAO.save(teacher);
-            user = new User(teacher.getLogin(), teacher.getPassword(), Role.TEACHER);
+            user = new User(teacher.getLogin(), null, Role.TEACHER);
             userDAO.save(user);
         } catch (SQLException e) {
             LOGGER.error("Save Teacher"+e);
@@ -82,21 +79,20 @@ public class TeacherController {
         LOGGER.debug("Save new Teacher" + teacher.toString());
         LOGGER.debug("Save new user" + user.toString());
 
-
-
         return "redirect:/operation/teacher";
     }
 
-    @PatchMapping("/{id}")
+    @PostMapping("/update")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String updateTeacher(@ModelAttribute("teacher") Teacher teacher, @PathVariable("id") int id) {
+    public String updateTeacher(@ModelAttribute("teacher") Teacher teacher, @RequestParam("id") int id) {
         Teacher temp = teacherDAO.showAllInfo(id);
 
         User user = new User();
+
         user.setId(temp.getId());
         user.setLogin(teacher.getLogin());
-        user.setPassword(teacher.getPassword());
         user.setRoleString(teacher.getRole());
+        user.setId(teacherDAO.showAllInfo(id).getId());
 
         LOGGER.debug("Update teacher" + teacher.toString());
         LOGGER.debug("Update user" + user.toString());
@@ -107,9 +103,9 @@ public class TeacherController {
         return "redirect:/operation/teacher";
     }
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String deleteTeacher(@PathVariable("id") int id) {
+    public String deleteTeacher(@RequestParam("id") int id) {
         int temp = teacherDAO.showAllInfo(id).getId();
 
         LOGGER.debug("Delete teacher N" + id);

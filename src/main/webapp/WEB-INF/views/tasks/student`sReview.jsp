@@ -1,12 +1,11 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.learning.spring.models.Student" %>
-<%@ page import="com.learning.spring.models.Subject" %>
+<%@ page import="com.learning.spring.models.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>I`m student</title>
+    <title>Reviews</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -16,66 +15,45 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/templates/navUser.jsp"/>
-<%
-    Student student = ((Student) request.getAttribute("student"));
-%>
 <div class="container">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-7">
-                <h2>Search in the table</h2>
-                <p>Search for symbols in all columns:</p>
-                <input class="form-control" id="myInput" type="text" placeholder="Search..">
-                <br>
-            </div>
-            <div class="col-sm-3">
-                <br>
-                <br>
-                <br>
-                <button type="submit" class="btn btn-primary">
-                    <a style="color: aliceblue" class="link-secondary" href="/operation/review?id=<%=student.getStudentId()%>"
-                    >Review for my reports</a></button>
-            </div>
-            <div class="col-sm-3">
-                <br>
-                <br>
-                <br>
-            </div>
-        </div>
+    <div class="col-sm-10">
+        <h2>Search in the table</h2>
+        <p>Search for symbols in all columns:</p>
+        <input class="form-control" id="myInput" type="text" placeholder="Search..">
+        <br>
     </div>
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>Subject</th>
-            <th>Academic semestr</th>
-            <th>Max grade</th>
-            <th>Your progres</th>
-            <th>View task for this subject</th>
+            <th>Task name</th>
+            <th>Teacher id</th>
+            <th>Report id</th>
+            <th>Grade</th>
+            <th>Time review</th>
+
         </tr>
         </thead>
         <tbody id="myTable">
         <%
-            List<Subject> list = student.getSubjectList();
-            for (Subject subject : list) {
-
+            Student student = ((Student) request.getAttribute("student"));
+            for (Report report : student.getReportList()) {
+                for (Review review : student.getReviewMap().get(report.getReportId())) {
         %>
         <tr>
-            <th><a class="link-secondary" href="/operation/subject/show?id=<%= subject.getSubjectID()%>"
-            ><%=subject.getSubjectName()%>
-            </a>
+            <th><%=report.getTaskName()%>
+            <th>
+            <a class="link-secondary" href="/operation/teacher/show?id=<%=review.getTeacherId()%>"
+            ><%=review.getTeacherId()%></a>
             </th>
-            <th><%=subject.getSemester()%>
-            </th>
-            <th><%=subject.getMaxGrade()%>
-            </th>
-            <th><%=subject.getProgress()%>
-            </th>
-            <th><a class="link-secondary"
-                   href="/operation/task?idS=<%= subject.getSubjectID()%>&idSt=<%= student.getStudentId()%>&idT=-1"
-            >Show tasks</a>
+            <th><%=review.getReportId()%>
+            <th><%=review.getGrade()%>
+            <th><%=review.getTimeReview()%>
             </th>
         </tr>
-        <%}%>
+        <%
+                }
+            }
+        %>
         </tbody>
     </table>
 </div>
@@ -91,7 +69,6 @@
         });
     });
 </script>
-
 <script>
     // Disable form submissions if there are invalid fields
     (function () {
@@ -114,3 +91,4 @@
 </script>
 </body>
 </html>
+

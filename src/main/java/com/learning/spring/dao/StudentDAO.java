@@ -9,7 +9,6 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 @Component
 public class StudentDAO {
@@ -17,6 +16,37 @@ public class StudentDAO {
     private final Logger LOGGER = Logger.getLogger(StudentDAO.class);
 
     public StudentDAO() {
+    }
+
+    public Integer calculationSubjectProgress(Integer studentId, Integer subjectId) {
+        Integer result = 0;
+        try (Connection connection = JDBC.getInstance().getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("SELECT SUM(grade) " +
+                             "FROM Review " +
+                             "JOIN REPORT R on Review.report_id = R.REPORT_ID " +
+                             "JOIN STUDENTs S on R.student_id = S.STUDENT_ID " +
+                             "JOIN Connecting_Student CS on S.STUDENT_ID = CS.student_id " +
+                             "JOIN SUBJECT S2 on CS.subject_id = S2.SUBJECT_ID " +
+                             "WHERE R.student_id = ? " +
+                             "AND S2.subject_id = ? " +
+                             "AND Review.time_review = (SELECT MAX(RT.time_review) " +
+                             "                      FROM REVIEW RT " +
+                             "                               join REPORT R2 on RT.report_id = R2.REPORT_ID " +
+                             "                      WHERE R2.task_name = R.task_name)");
+        ) {
+            preparedStatement.setInt(1, studentId);
+            preparedStatement.setInt(2, subjectId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+            result = resultSet.getInt(1);
+
+        } catch (SQLException e) {
+
+            LOGGER.error(e);
+        }
+        return result;
     }
 
     public List<Student> showAll() {
@@ -109,7 +139,8 @@ public class StudentDAO {
     public Student showAllInfo(Integer id) {
         Student student = null;
         try (Connection connection = JDBC.getInstance().getConnection();
-
+             PreparedStatement preparedStatementReviews =
+                     connection.prepareStatement("select * from  Review where report_id = ?");
              PreparedStatement preparedStatementStudent =
                      connection.prepareStatement("SELECT * from STUDENTs NATURAL JOIN Iogin_info Where student_id=?");
              PreparedStatement preparedStatementReports =
@@ -125,82 +156,48 @@ public class StudentDAO {
             resultSet.next();
             student = parseStudent(resultSet);
 
+
             preparedStatementReports.setInt(1, student.getStudentId());
-
             resultSet = preparedStatementReports.executeQuery();
-            student = parseReport(resultSet, student);
-            student = parseReview(student);
 
-            preparedStatementSubjects.setInt(1, student.getStudentId());
-
-            resultSet = preparedStatementSubjects.executeQuery();
-
-            List<Subject> subjectList = new LinkedList();
-
+            LinkedList reportList = new LinkedList();
             while (resultSet.next()) {
-                subjectList.add(SubjectDAO.parseSubject(resultSet));
+
+                reportList.add(ReportDAO.parseReport(resultSet));
             }
+            student.setReportList(reportList);
 
-            student.setSubjectList(subjectList);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            LOGGER.error(e);
-        }
-        return student;
-    }
 
-    public static Student parseReport(ResultSet resultSetReport, Student student) {
-        List<Report> reportList = new LinkedList();
-
-        try {
-            while (resultSetReport.next()) {
-
-                reportList.add(new Report(
-                        resultSetReport.getInt(1),
-                        resultSetReport.getString(2),
-                        resultSetReport.getDate(3),
-                        resultSetReport.getInt(4),
-                        resultSetReport.getString(5)));
-            }
-
-        } catch (SQLException e) {
-            System.out.println(e);
-            e.printStackTrace();
-        }
-
-        student.setReportList(reportList);
-
-        return student;
-    }
-
-    public static Student parseReview(Student student) {
-        HashMap<Integer, List<Review>> map = new HashMap<>();
-        List<Review> reviewList = new LinkedList<>();
-
-        try (Connection connection = JDBC.getInstance().getConnection();
-             PreparedStatement preparedStatementReviews =
-                     connection.prepareStatement("select * from  Review where report_id = ?");) {
-
+            HashMap<Integer, List<Review>> map = new HashMap<>();
             for (Report report : student.getReportList()) {
+                List<Review> reviewList = new LinkedList<>();
 
                 preparedStatementReviews.setInt(1, report.getReportId());
-                ResultSet resultSet = preparedStatementReviews.executeQuery();
+                ResultSet resultSetRev = preparedStatementReviews.executeQuery();
 
-                while (resultSet.next()) {
-                    reviewList.add(new Review(
-                            resultSet.getInt(1),
-                            resultSet.getInt(2),
-                            resultSet.getInt(3),
-                            resultSet.getInt(4),
-                            resultSet.getDate(5)));
+                while (resultSetRev.next()) {
+                    reviewList.add(ReviewDAO.parseReview(resultSetRev));
                 }
 
                 map.put(report.getReportId(), reviewList);
             }
             student.setReviewMap(map);
 
+
+            preparedStatementSubjects.setInt(1, student.getStudentId());
+            resultSet = preparedStatementSubjects.executeQuery();
+
+            LinkedList subjectList = new LinkedList();
+
+            while (resultSet.next()) {
+                subjectList.add(SubjectDAO.parseSubject(resultSet));
+            }
+
+            student.setSubjectList(subjectList);
+
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
         return student;
     }

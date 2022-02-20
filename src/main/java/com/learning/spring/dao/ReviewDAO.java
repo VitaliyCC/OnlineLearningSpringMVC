@@ -6,10 +6,7 @@ import com.learning.spring.models.Student;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,25 +15,24 @@ import java.util.List;
 public class ReviewDAO {
     private final Logger LOGGER = Logger.getLogger(ReviewDAO.class);
 
-    public List<Review> showAll() {
-        return null;
-    }
+    public void save(Review review) throws SQLException {
+        Connection connection = JDBC.getInstance().getConnection();
+        PreparedStatement preparedStatement =
+                connection.prepareStatement("INSERT INTO REVIEW (review_id, teacher_id, report_id, grade, time_review) " +
+                        "VALUES (?, ?, ?, ?,?)");
 
-    public Review showAllInfo(Integer id) {
-        return null;
-    }
+        Statement statement = connection.createStatement();
 
-    public Boolean update(Integer id, Review review) {
-        return true;
-    }
+        ResultSet resultSet = statement.executeQuery("SELECT MAX(review_id) FROM review");
+        resultSet.next();
+        Review.setCountReview(resultSet.getInt(1) + 1);
 
-    public Boolean delete(Integer id) {
-        return true;
-    }
-
-    public void save(Review review) {
-
-
+        preparedStatement.setInt(1, Review.getCountReview());
+        preparedStatement.setInt(2, review.getTeacherId());
+        preparedStatement.setInt(3, review.getReportId());
+        preparedStatement.setInt(4, review.getGrade());
+        preparedStatement.setDate(5, review.getTimeReview());
+        preparedStatement.executeUpdate();
     }
 
     public static Review parseReview(ResultSet resultSet) throws SQLException {

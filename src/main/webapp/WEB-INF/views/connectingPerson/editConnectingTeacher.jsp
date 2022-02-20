@@ -1,5 +1,8 @@
+<%@ page import="com.learning.spring.models.ConnectingTeacher" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en">
 <head>
     <title>Edit student</title>
     <meta charset="utf-8">
@@ -8,22 +11,22 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<div th:insert="templates/nav :: copy"></div>
+<jsp:include page="/WEB-INF/views/templates/navAdmin.jsp"/>
 
 <div class="container mt-3">
-    <form th:method="PATCH" th:action="@{/operation/connectingPerson/T/{id}(id=${connectingT.getId()})}"
-          th:object="${connectingT}"
+    <%ConnectingTeacher connectingT = ((ConnectingTeacher) request.getAttribute("connectingT"));%>
+    <form method="post" action="/operation/connectingPerson/T/update?id=<%=connectingT.getId()%>"
           class="needs-validation" novalidate>
         <div class="mb-3 mt-3">
             <label for="studentId" class="form-label">Enter teacher id: </label>
-            <input type="number" th:field="*{teacherId}" id="studentId" class="form-control"
+            <input type="number" name="teacherId" value="<%=connectingT.getTeacherId()%>" id="studentId" class="form-control"
                    required min="0" max="1000"/>
             <div class="valid-feedback">Valid.</div>
             <div class="invalid-feedback">Please fill this field correctly.</div>
         </div>
         <div class="mb-3">
             <label for="subjectId" class="form-label">Enter subject id: </label>
-            <input type="number" th:field="*{subjectId}" id="subjectId" class="form-control"
+            <input type="number" name="subjectId" value="<%=connectingT.getSubjectId()%>" id="subjectId" class="form-control"
                    required min="0" max="1000"/>
             <div class="valid-feedback">Valid.</div>
             <div class="invalid-feedback">Please fill this field correctly.</div>
@@ -34,11 +37,11 @@
 </div>
 <div class="container mt-3">
     <br>
-    <form class="form_" th:method="DELETE" th:action="@{/operation/connectingPerson/T/{id}(id=${connectingT.getId()})}">
+    <form class="form_" method="post" action="/operation/connectingPerson/T/delete?id=<%=connectingT.getId()%>">
         <button type="submit" class="btn btn-outline-danger">Delete connecting</button>
     </form>
 </div>
-<div th:insert="templates/footer :: copy"></div>
+<jsp:include page="/WEB-INF/views/templates/footer.jsp"/>
 <script>
     // Disable form submissions if there are invalid fields
     (function() {

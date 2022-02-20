@@ -37,7 +37,7 @@ public class SubjectController {
     }
 
     @GetMapping("/show")
-    @PreAuthorize("hasAnyAuthority('users:write')")
+    @PreAuthorize("hasAnyAuthority('users:write','users:read','users:check')")
     public String showSubjectIndex(@RequestParam("id") int id, Model model) {
         Subject subject = subjectDAO.showAllInfo(id);
         model.addAttribute("subject", subject);

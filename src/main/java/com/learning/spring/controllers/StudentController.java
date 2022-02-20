@@ -64,14 +64,13 @@ public class StudentController {
     public String addNewStudent(@RequestParam("name") String name,
                                 @RequestParam("surname") String surname,
                                 @RequestParam("patronymic") String patronymic,
-                                @RequestParam("login") String login,
-                                @RequestParam("password") String password) {
+                                @RequestParam("login") String login) {
         Student student = new Student();
         student.setName(name);
         student.setSurname(surname);
         student.setPatronymic(patronymic);
 
-        User user = new User(login, password, Role.STUDENT);
+        User user = new User(login, null, Role.STUDENT);
         try {
             studentDAO.save(student);
             userDAO.save(user);
@@ -92,7 +91,6 @@ public class StudentController {
                                 @RequestParam("surname") String surname,
                                 @RequestParam("patronymic") String patronymic,
                                 @RequestParam("login") String login,
-                                @RequestParam("password") String password,
                                 @RequestParam("role") String role,
                                 @RequestParam("id") int id) {
 
@@ -102,9 +100,9 @@ public class StudentController {
         student.setPatronymic(patronymic);
 
         User user = new User();
-        user.setPassword(password);
         user.setLogin(login);
         user.setRoleString(role);
+        user.setId(studentDAO.showAllInfo(id).getId());
 
         LOGGER.debug("Update student" + student.toString());
         LOGGER.debug("Update user" + user.toString());

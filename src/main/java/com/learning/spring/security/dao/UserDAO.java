@@ -79,12 +79,11 @@ public class UserDAO {
         try (Connection connection = JDBC.getInstance().getConnection();
 
              PreparedStatement preparedStatementStudent =
-                     connection.prepareStatement("UPDATE Iogin_info set    password=?, username=?, role=? where id =?");
+                     connection.prepareStatement("UPDATE Iogin_info set username=?, role=? where id =?");
         ) {
-            preparedStatementStudent.setString(1, Encoder.passwordEncoder().encode(user.getPassword()));
-            preparedStatementStudent.setString(2, user.getLogin());
-            preparedStatementStudent.setString(3, user.getRole().toString());
-            preparedStatementStudent.setInt(4, user.getId());
+            preparedStatementStudent.setString(1, user.getLogin());
+            preparedStatementStudent.setString(2, user.getRole().toString());
+            preparedStatementStudent.setInt(3, user.getId());
 
             preparedStatementStudent.executeUpdate();
 

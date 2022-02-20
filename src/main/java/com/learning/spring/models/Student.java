@@ -11,7 +11,6 @@ public class Student {
     private String patronymic;
     private String surname;
     private String login;
-    private String password;
     private String role;
     private List<Subject> subjectList;
     private List<Report> reportList;
@@ -27,7 +26,6 @@ public class Student {
         this.patronymic = patronymic;
         this.surname = surname;
         this.login = login;
-        this.password = password;
         this.role = role;
     }
 
@@ -112,14 +110,6 @@ public class Student {
         this.login = login;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getRole() {
         return role;
     }
@@ -137,11 +127,7 @@ public class Student {
                 ", patronymic='" + patronymic + '\'' +
                 ", surname='" + surname + '\'' +
                 ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
-                ", subjectList=" + subjectList +
-                ", reportList=" + reportList +
-                ", reviewList=" + reviewMap +
                 '}';
     }
 }

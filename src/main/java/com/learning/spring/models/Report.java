@@ -1,33 +1,41 @@
 package com.learning.spring.models;
 
 import java.sql.Date;
-import java.time.LocalDateTime;
 
 public class Report {
-    private static Integer countReportl=0;
+    private static Integer countReport =0;
     private Integer reportId;
     private String solutions;
     private Date sendTime;
-    private Integer studentID;
+    private Integer studentId;
     private String taskName;
+    private Boolean checked;
 
     public Report() {
     }
 
-    public Report(Integer reportId, String solutions, Date sendTime, Integer studentID, String taskName) {
+    public Report(Integer reportId, String solutions, Date sendTime, Integer studentId, String taskName) {
         this.reportId = reportId;
         this.solutions = solutions;
         this.sendTime = sendTime;
-        this.studentID = studentID;
+        this.studentId = studentId;
         this.taskName = taskName;
     }
 
-    public static Integer getCountReportl() {
-        return countReportl;
+    public Boolean getChecked() {
+        return checked;
     }
 
-    public static void setCountReportl(Integer countReportl) {
-        Report.countReportl = countReportl;
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
+    }
+
+    public static Integer getCountReport() {
+        return countReport;
+    }
+
+    public static void setCountReport(Integer countReport) {
+        Report.countReport = countReport;
     }
 
     public Integer getReportId() {
@@ -54,12 +62,12 @@ public class Report {
         this.sendTime = sendTime;
     }
 
-    public Integer getStudentID() {
-        return studentID;
+    public Integer getStudentId() {
+        return studentId;
     }
 
-    public void setStudentID(Integer studentID) {
-        this.studentID = studentID;
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
     }
 
     public String getTaskName() {
@@ -70,4 +78,15 @@ public class Report {
         this.taskName = taskName;
     }
 
+    @Override
+    public String toString() {
+        return "Report{" +
+                "reportId=" + reportId +
+                ", solutions='" + solutions + '\'' +
+                ", sendTime=" + sendTime +
+                ", studentID=" + studentId +
+                ", taskName='" + taskName + '\'' +
+                ", checked=" + checked +
+                '}';
+    }
 }

@@ -35,8 +35,6 @@ public class ConnectingController {
     public String workingWithConnectingStudent(Model model) {
         model.addAttribute("connectingS", connectingStudentDAO.showAll());
         model.addAttribute("connectingT", connectingTeacherDAO.showAll());
-        model.addAttribute("newConnectingS", new ConnectingStudent());
-        model.addAttribute("newConnectingT", new ConnectingTeacher());
 
         LOGGER.debug("Show all ConnectingStudent");
 
@@ -52,9 +50,9 @@ public class ConnectingController {
         return "connectingStudents/showInfo";
     }*/
 
-    @GetMapping("/S/edit/{id}")
+    @GetMapping("/S/edit")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String editConnectingStudentIndex(@PathVariable("id") int id, Model model) {
+    public String editConnectingStudentIndex(@RequestParam("id") int id, Model model) {
         ConnectingStudent connectingStudent = connectingStudentDAO.showAllInfo(id);
         ConnectingTeacher connectingTeacher = connectingTeacherDAO.showAllInfo(id);
         model.addAttribute("connectingS", connectingStudent);
@@ -64,9 +62,9 @@ public class ConnectingController {
 
         return "connectingPerson/editConnectingStudent";
     }
-    @GetMapping("/T/edit/{id}")
+    @GetMapping("/T/edit")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String editConnectingTeacherIndex(@PathVariable("id") int id, Model model) {
+    public String editConnectingTeacherIndex(@RequestParam("id") int id, Model model) {
         ConnectingTeacher connectingTeacher = connectingTeacherDAO.showAllInfo(id);
         model.addAttribute("connectingT", connectingTeacher);
         LOGGER.debug("Show ConnectingTeacher  " + connectingTeacher.toString());
@@ -107,27 +105,27 @@ public class ConnectingController {
         return "redirect:/operation/connectingPerson";
     }
 
-    @PatchMapping("/S/{id}")
+    @PostMapping("/S/update")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String updateConnectingStudent(@ModelAttribute("connectingS") ConnectingStudent connectingStudent, @PathVariable("id") int id) {
+    public String updateConnectingStudent(@ModelAttribute("connectingS") ConnectingStudent connectingStudent, @RequestParam("id") int id) {
         LOGGER.debug("Update ConnectingStudent" + connectingStudent.toString());
 
         connectingStudentDAO.update(id, connectingStudent);
 
         return "redirect:/operation/connectingPerson";
     }
-    @PatchMapping("/T/{id}")
+    @PostMapping("/T/update")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String updateConnectingTeacher(@ModelAttribute("connectingT") ConnectingTeacher connectingTeacher, @PathVariable("id") int id) {
+    public String updateConnectingTeacher(@ModelAttribute("connectingT") ConnectingTeacher connectingTeacher, @RequestParam("id") int id) {
         LOGGER.debug("Update ConnectingStudent" + connectingTeacher.toString());
 
         connectingTeacherDAO.update(id, connectingTeacher);
 
         return "redirect:/operation/connectingPerson";
     }
-    @DeleteMapping("/S/{id}")
+    @PostMapping("/S/delete")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String deleteConnectingStudent(@PathVariable("id") int id) {
+    public String deleteConnectingStudent(@RequestParam("id") int id) {
         LOGGER.debug("Delete ConnectingStudent N" + id);
 
         connectingStudentDAO.delete(id);
@@ -135,9 +133,9 @@ public class ConnectingController {
         return "redirect:/operation/connectingPerson";
     }
 
-    @DeleteMapping("/T/{id}")
+    @PostMapping("/T/delete")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String deleteConnectingTeacher(@PathVariable("id") int id) {
+    public String deleteConnectingTeacher(@RequestParam("id") int id) {
         LOGGER.debug("Delete ConnectingTeacher N" + id);
 
         connectingTeacherDAO.delete(id);

@@ -13,58 +13,53 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/templates/nav.jsp" />
+<jsp:include page="/WEB-INF/views/templates/navAdmin.jsp" />
 <div class="container">
     <div class="row">
         <div class="col-sm-4">
             <h3>
                 <form class="form_" method="GET" action="/operation/student">
-                    <button class="btn btn-outline-secondary" type="submit">Edit students</button>
+                    <button style="position: center" class="btn btn-outline-secondary" type="submit">Edit students</button>
                 </form>
             </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+            <p>Choose to be able to manage students: create, edit...</p>
         </div>
         <div class="col-sm-4">
             <h3>
                 <form class="form_" method="GET" action="/operation/teacher">
-                    <button class="btn btn-outline-secondary" type="submit">Edit teachers</button>
+                    <button style="position: center" class="btn btn-outline-secondary" type="submit">Edit teachers</button>
                 </form>
             </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+            <p>Choose to be able to manage teachers: create, edit...</p>
         </div>
         <div class="col-sm-4">
             <h3>
-                <form class="form_" method="GET" action="/operation/student">
-                    <button class="btn btn-outline-secondary" type="submit">Edit admins</button>
+                <form class="form_" method="GET" action="/operation/admin">
+                    <button style="position: center" class="btn btn-outline-secondary" type="submit">Edit admins</button>
                 </form>
             </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+            <p>Choose to be able to manage admins: create, edit</p>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-4" style="">
             <h3>
                 <form class="form_" method="GET" action="/operation/connectingPerson">
-                    <button class="btn btn-outline-secondary" type="submit">Connecting person</button>
+                    <button style="position: center" class="btn btn-outline-secondary" type="submit">Connecting person</button>
                 </form>
             </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+            <p>Choose to be able to manage connecting to disciplines...</p>
         </div>
 
         <div class="col-sm-4">
             <h3>
                 <form class="form_" method="GET" action="/operation/subject">
-                    <button class="btn btn-outline-secondary" type="submit">Edit subjects</button>
+                    <button style="position: center" class="btn btn-outline-secondary" type="submit">Edit subjects</button>
                 </form>
             </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
-        </div>-->
+            <p>Choose to be able to manage subjects: create, edit...</p>
+        </div>
     </div>
 </div>
 <jsp:include page="/WEB-INF/views/templates/footer.jsp" />

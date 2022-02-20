@@ -1,6 +1,7 @@
 package com.learning.spring.controllers;
 
 import com.learning.spring.dao.ReviewDAO;
+import com.learning.spring.dao.StudentDAO;
 import com.learning.spring.models.Review;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,79 +10,61 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.sql.SQLException;
+import java.time.LocalDate;
+
 @Controller
 @RequestMapping("/operation/review")
 public class ReviewController {
 
     private final ReviewDAO reviewDAO;
+    private final StudentDAO studentDAO;
 
     private final Logger LOGGER = Logger.getLogger(ReviewDAO.class);
 
     @Autowired
-    public ReviewController(ReviewDAO reviewDAO) {
+    public ReviewController(ReviewDAO reviewDAO, StudentDAO studentDAO) {
         this.reviewDAO = reviewDAO;
+        this.studentDAO = studentDAO;
     }
-
 
     @GetMapping("")
-    @PreAuthorize("hasAnyAuthority('users:write')")
-    public String workingWithReview(Model model) {
-        model.addAttribute("reviews", reviewDAO.showAll());
-        model.addAttribute("newReview", new Review());
+    @PreAuthorize("hasAnyAuthority('users:read,users:admin','users:check')")
+    public String workingWithReview(@RequestParam("id") Integer id, Model model) {
 
-        LOGGER.debug("Show all Review");
+        model.addAttribute("student", studentDAO.showAllInfo(id));
 
-        return "reviews/operationsOnReview";
+        LOGGER.debug("Show all Review for student "+id);
+
+        return "tasks/student`sReview";
     }
 
-    @GetMapping("/show/{id}")
-    @PreAuthorize("hasAnyAuthority('users:write')")
-    public String showReviewIndex(@PathVariable("id") int id, Model model) {
-        model.addAttribute("review", reviewDAO.showAllInfo(id));
+    @GetMapping("/show")
+    @PreAuthorize("hasAnyAuthority('users:write','users:check')")
+    public String showReviewIndex(Model model,
+                                  @RequestParam("id") int id,
+                                  @RequestParam("idT")int idT) {
+        Review review = new Review();
+
+        review.setTimeReview(Date.valueOf(LocalDate.now()));
+        review.setReportId(id);
+        review.setTeacherId(idT);
+        model.addAttribute("review",review);
         LOGGER.debug("Show Review with " + id);
 
-        return "reviews/showInfo";
-    }
-
-    @GetMapping("/edit/{id}")
-    @PreAuthorize("hasAnyAuthority('users:write')")
-    public String editReview(@PathVariable("id") int id, Model model) {
-        Review review = reviewDAO.showAllInfo(id);
-        model.addAttribute("review", review);
-        LOGGER.debug("Show Review  " + review.toString());
-
-        return "reviews/editReview";
+        return "tasks/newReview";
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasAnyAuthority('users:write')")
-    public String addNewReview(@ModelAttribute("review") Review review) {
+    @PreAuthorize("hasAnyAuthority('users:write','users:check')")
+    public String addNewReview(@ModelAttribute("review") Review review) throws SQLException {
 
         reviewDAO.save(review);
 
         LOGGER.debug("Save new Review" + review.toString());
 
 
-        return "redirect:/operation/review";
-    }
-
-    @PatchMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('users:write')")
-    public String updateReview(@ModelAttribute("review") Review review, @PathVariable("id") int id) {
-        LOGGER.debug("Update Review" + review.toString());
-
-        reviewDAO.update(id, review);
-
-        return "redirect:/operation/review";
-    }
-
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('users:write')")
-    public String deleteReview(@PathVariable("id") int id) {
-        LOGGER.debug("Delete Review N" + id);
-
-        reviewDAO.delete(id);
-
-        return "redirect:/operation/review";
+        return "redirect:/index";
     }
 }

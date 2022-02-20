@@ -14,7 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/templates/nav.jsp"/>
+<jsp:include page="/WEB-INF/views/templates/navAdmin.jsp"/>
 
 <div class="container">
     <div class="container">

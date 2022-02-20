@@ -8,6 +8,7 @@ public class Subject {
     private String subjectName;
     private Integer semester;
     private Integer maxGrade;
+    private Integer progress;
     private List<Task> taskList;
     private List<ConnectingStudent> connectingStudents;
     private List<ConnectingTeacher> connectingTeachers;
@@ -29,10 +30,15 @@ public class Subject {
                 ", subjectName='" + subjectName + '\'' +
                 ", semester=" + semester +
                 ", maxGrade=" + maxGrade +
-                ", taskList=" + taskList +
-                ", connectingStudents=" + connectingStudents +
-                ", connectingTeachers=" + connectingTeachers +
                 '}';
+    }
+
+    public Integer getProgress() {
+        return progress;
+    }
+
+    public void setProgress(Integer progress) {
+        this.progress = progress;
     }
 
     public List<Task> getTaskList() {

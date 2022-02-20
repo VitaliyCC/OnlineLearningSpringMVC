@@ -17,16 +17,16 @@
 </head>
 <body>
 
-<jsp:include page="/WEB-INF/views/templates/nav.jsp"/>
+<jsp:include page="/WEB-INF/views/templates/navAdmin.jsp"/>
 
 <div class="container mt-3">
     <div class="row">
         <%Subject subject = ((Subject) request.getAttribute("subject"));%>
         <div class="col-sm-3">
             <h3>Login information</h3>
-            <p ><%=subject.getSubjectName()%></p></p>
-            <p ><%=subject.getSemester()%></p></p>
-            <p ><%=subject.getMaxGrade()%></p></p>
+            <p >Subject name - <%=subject.getSubjectName()%></p></p>
+            <p >Academic semester - <%=subject.getSemester()%></p></p>
+            <p >Max grade - <%=subject.getMaxGrade()%></p></p>
         </div>
 
 

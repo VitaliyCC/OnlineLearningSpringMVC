@@ -1,12 +1,14 @@
 package com.learning.spring.models;
 
+import java.util.List;
+
 public class Task {
-    private static Integer countSubject=0;
     private String taskName;
     private Integer subjectId;
     private String subject;
     private Integer maxGrade;
-
+    private Integer grade;
+    private List<Report> reportList;
     public Task() {
     }
 
@@ -17,12 +19,20 @@ public class Task {
         this.maxGrade = maxGrade;
     }
 
-    public static Integer getCountSubject() {
-        return countSubject;
+    public List<Report> getReportList() {
+        return reportList;
     }
 
-    public static void setCountSubject(Integer countSubject) {
-        Task.countSubject = countSubject;
+    public void setReportList(List<Report> reportList) {
+        this.reportList = reportList;
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
     }
 
     public String getTaskName() {

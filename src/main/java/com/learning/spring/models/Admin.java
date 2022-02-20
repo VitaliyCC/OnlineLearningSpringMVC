@@ -2,21 +2,43 @@ package com.learning.spring.models;
 
 public class Admin {
     private static Integer countAdmins=0;
-    private Integer aminId;
+    private Integer adminId;
     private Integer id;
     private String name;
     private String patronymic;
     private String surname;
+    private String login;
+
+    private String role;
 
     public Admin() {
     }
 
-    public Admin(Integer aminId, Integer id, String name, String patronymic, String surname) {
-        this.aminId = aminId;
+    public Admin(Integer id, Integer adminId, String name,
+                 String surname, String patronymic, String password, String login, String role) {
+        this.adminId = adminId;
         this.id = id;
         this.name = name;
         this.patronymic = patronymic;
         this.surname = surname;
+        this.login = login;
+        this.role = role;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public static Integer getCountAdmins() {
@@ -27,12 +49,12 @@ public class Admin {
         Admin.countAdmins = countAdmins;
     }
 
-    public Integer getAminId() {
-        return aminId;
+    public Integer getAdminId() {
+        return adminId;
     }
 
-    public void setAminId(Integer aminId) {
-        this.aminId = aminId;
+    public void setAdminId(Integer adminId) {
+        this.adminId = adminId;
     }
 
     public Integer getId() {
@@ -68,5 +90,18 @@ public class Admin {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    @Override
+    public String toString() {
+        return "Admin{" +
+                "aminId=" + adminId +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", surname='" + surname + '\'' +
+                ", login='" + login + '\'' +
+                ", role='" + role + '\'' +
+                '}';
     }
 }

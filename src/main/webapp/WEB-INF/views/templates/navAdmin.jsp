@@ -17,30 +17,21 @@
                 <a class="nav-link active" href="/operation/student">Work with students</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="/operation/subject">Work with subject</a>
+                <a class="nav-link active" href="/operation/subject">Work with subjects</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/operation/admin">Work with admins</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/operation/teacher">Work with teacher</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" href="/operation/connectingPerson">Work with connecting</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Disabled</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Disabled</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Disabled</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Disabled</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Disabled</a>
-            </li>
 
             <li class="nav-item">
                 <form action="/auth/logout" method="POST">
-                    <button class="nav-link active" type="submit">Logout</button>
+                    <button style="color: black" class="nav-link active" type="submit">Logout</button>
                 </form>
             </li>
         </ul>

@@ -1,6 +1,11 @@
 package com.learning.spring.security.model;
 
 
+import com.learning.spring.models.Student;
+import com.learning.spring.models.Teacher;
+
+import java.util.List;
+
 public class User {
     private static Integer countUsers;
     private int id;
@@ -53,7 +58,22 @@ public class User {
     public Role getRole() {
         return role;
     }
-
+    public Integer findStudent(List<Student> list){
+        for (Student student : list) {
+            if(id== student.getId()){
+                return student.getStudentId();
+            }
+        }
+        return -1;
+    }
+    public Integer findTeacher(List<Teacher> list){
+        for (Teacher teacher : list) {
+            if(id== teacher.getId()){
+                return teacher.getTeacherId();
+            }
+        }
+        return -1;
+    }
     public void setRoleString(String role){
         if(role.equals("STUDENT")){
             this.role=Role.STUDENT;

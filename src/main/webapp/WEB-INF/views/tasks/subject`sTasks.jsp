@@ -1,12 +1,12 @@
-<%@ page import="java.util.List" %>
-<%@ page import="com.learning.spring.models.Student" %>
 <%@ page import="com.learning.spring.models.Subject" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.learning.spring.models.Task" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>I`m student</title>
+    <title>Tasks</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -16,64 +16,68 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/templates/navUser.jsp"/>
-<%
-    Student student = ((Student) request.getAttribute("student"));
-%>
 <div class="container">
+
     <div class="container">
-        <div class="row">
-            <div class="col-sm-7">
-                <h2>Search in the table</h2>
-                <p>Search for symbols in all columns:</p>
-                <input class="form-control" id="myInput" type="text" placeholder="Search..">
-                <br>
-            </div>
-            <div class="col-sm-3">
-                <br>
-                <br>
-                <br>
-                <button type="submit" class="btn btn-primary">
-                    <a style="color: aliceblue" class="link-secondary" href="/operation/review?id=<%=student.getStudentId()%>"
-                    >Review for my reports</a></button>
-            </div>
-            <div class="col-sm-3">
-                <br>
-                <br>
-                <br>
-            </div>
+        <div class="col-sm-7">
+            <h2>Search in the table</h2>
+            <p>Search for symbols in all columns:</p>
+            <input class="form-control" id="myInput" type="text" placeholder="Search..">
+            <br>
         </div>
+
     </div>
     <table class="table table-bordered">
         <thead>
+        <%
+            Subject subject = ((Subject) request.getAttribute("subject"));
+            String url;
+            String operation;
+            String colomnName="";
+            if ((Integer) request.getAttribute("idSt") != -1) {
+                url = "/operation/report/show?id=" + (Integer) request.getAttribute("idSt");
+                operation = "Create new report";
+                colomnName = "Your grade";
+            } else {
+                url = "/operation/task/show?id=" + (Integer) request.getAttribute("idT");
+                operation = "Swow reports";
+            }%>
         <tr>
-            <th>Subject</th>
-            <th>Academic semestr</th>
+            <th>Task name</th>
+            <th>Subject id</th>
+            <th>Task</th>
             <th>Max grade</th>
-            <th>Your progres</th>
-            <th>View task for this subject</th>
+            <th><%=colomnName%></th>
         </tr>
         </thead>
         <tbody id="myTable">
         <%
-            List<Subject> list = student.getSubjectList();
-            for (Subject subject : list) {
-
+            for (Task task : subject.getTaskList()) {
+                if ((Integer) request.getAttribute("idSt") != -1) {
+                    url = "/operation/report/show?id=" + (Integer) request.getAttribute("idSt");
+                    operation = "Create new report";
+                } else {
+                    url = "/operation/task/show?id=" + (Integer) request.getAttribute("idT");
+                    operation = "Swow reports";
+                }
+                url += "&nameT=" + String.valueOf(task.getTaskName());
         %>
         <tr>
-            <th><a class="link-secondary" href="/operation/subject/show?id=<%= subject.getSubjectID()%>"
-            ><%=subject.getSubjectName()%>
+            <th><%=task.getTaskName()%>
+            </th>
+            <th><a class="link-secondary" href="/operation/subject/show?id=<%=subject.getSubjectID()%>"
+            ><%=task.getSubjectId()%>
             </a>
             </th>
-            <th><%=subject.getSemester()%>
+            <th><%=task.getSubject()%>
             </th>
-            <th><%=subject.getMaxGrade()%>
+            <th><%=task.getMaxGrade()%>
             </th>
-            <th><%=subject.getProgress()%>
+            <th><%=task.getGrade()%>
             </th>
-            <th><a class="link-secondary"
-                   href="/operation/task?idS=<%= subject.getSubjectID()%>&idSt=<%= student.getStudentId()%>&idT=-1"
-            >Show tasks</a>
-            </th>
+            <th><a class="link-secondary" href="<%=url%>"
+            ><%=operation%>
+            </a>
         </tr>
         <%}%>
         </tbody>
@@ -81,6 +85,7 @@
 </div>
 
 <jsp:include page="/WEB-INF/views/templates/footer.jsp"/>
+
 <script>
     $(document).ready(function () {
         $("#myInput").on("keyup", function () {
@@ -90,8 +95,8 @@
             });
         });
     });
-</script>
 
+</script>
 <script>
     // Disable form submissions if there are invalid fields
     (function () {
@@ -114,3 +119,4 @@
 </script>
 </body>
 </html>
+

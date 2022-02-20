@@ -11,7 +11,6 @@ public class Teacher {
     private String patronymic;
     private Integer salary;
     private String login;
-    private String password;
     private String role;
     private List<Subject> subjectList;
     private List<Review> reviewList;
@@ -28,7 +27,6 @@ public class Teacher {
         this.patronymic = patronymic;
         this.salary = salary;
         this.login = login;
-        this.password = password;
         this.role = role;
     }
 
@@ -54,14 +52,6 @@ public class Teacher {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getRole() {
@@ -138,7 +128,6 @@ public class Teacher {
                 ", patronymic='" + patronymic + '\'' +
                 ", salary=" + salary +
                 ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 '}';
     }

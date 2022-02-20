@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/templates/nav.jsp"/>
+<jsp:include page="/WEB-INF/views/templates/navAdmin.jsp"/>
 
 <div class="container mt-3">
     <%Subject subject = ((Subject) request.getAttribute("subject"));%>

@@ -1,5 +1,10 @@
+<%@ page import="com.learning.spring.models.ConnectingStudent" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.learning.spring.models.ConnectingTeacher" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en">
 <head>
     <title>Connecting person </title>
     <meta charset="utf-8">
@@ -13,7 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<div th:insert="templates/nav :: copy"></div>
+<jsp:include page="/WEB-INF/views/templates/navAdmin.jsp"/>
 
 <div class="container mt-3">
     <div class="row">
@@ -45,29 +50,32 @@
                 </tr>
                 </thead>
                 <tbody id="myTable1">
-                <tr th:each="connect : ${connectingS}">
-                    <!--<th scope="row">1</th>-->
-
+                <%
+                    List<ConnectingStudent> list = ((List<ConnectingStudent>) request.getAttribute("connectingS"));
+                    for (ConnectingStudent connect : list) {
+                %>
+                <tr>
                     <th><a class="link-secondary"
-                           th:href="@{/operation/student/show/{id}(id=${connect.getStudentId()})}"
-                           th:text="${connect.getStudentId()}">ID</a>
+                           href="/operation/student/show?id=<%=connect.getStudentId()%>"><%=connect.getStudentId()%>
+                    </a>
                     </th>
                     <th><a class="link-secondary"
-                           th:href="@{/operation/subject/show/{id}(id=${connect.getSubjectId()})}"
-                           th:text="${connect.getSubjectId()}">ID</a>
+                           href="/operation/subject/show?id=<%=connect.getSubjectId()%>"><%=connect.getSubjectId()%>
+                    </a>
                     </th>
 
                     <th><a class="link-secondary"
-                           th:href="@{/operation/connectingPerson/S/edit/{id}(id=${connect.getId()})}"
+                           href="/operation/connectingPerson/S/edit?id=<%=connect.getId()%>"
                     >Edit</a>
                     </th>
                 </tr>
+                <%}%>
                 </tbody>
             </table>
 
         </div>
 
-        <div class="col-sm-6">
+        <div class=" col-sm-6">
             <div class="row">
                 <div class="col-sm-7">
                     <h2>Search in the table</h2>
@@ -79,7 +87,8 @@
                     <h2>Connecting teacher</h2>
                     <br>
 
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newTeacher">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#newTeacher">
                         Add new connection
                     </button>
                     <br>
@@ -95,23 +104,26 @@
                 </tr>
                 </thead>
                 <tbody id="myTable2">
-                <tr th:each="connect : ${connectingT}">
-                    <!--<th scope="row">1</th>-->
-
+                <%
+                    List<ConnectingTeacher> list1 = ((List<ConnectingTeacher>) request.getAttribute("connectingT"));
+                    for (ConnectingTeacher connect1 : list1) {
+                %>
+                <tr>
                     <th><a class="link-secondary"
-                           th:href="@{/operation/teacher/show/{id}(id=${connect.getTeacherId()})}"
-                           th:text="${connect.getTeacherId()}">ID</a>
+                           href="/operation/teacher/show?id=<%=connect1.getTeacherId()%>"><%=connect1.getTeacherId()%>
+                    </a>
                     </th>
                     <th><a class="link-secondary"
-                           th:href="@{/operation/subject/show/{id}(id=${connect.getSubjectId()})}"
-                           th:text="${connect.getSubjectId()}">ID</a>
+                           href="/operation/subject/show?id=<%=connect1.getSubjectId()%>"><%=connect1.getSubjectId()%>
+                    </a>
                     </th>
 
                     <th><a class="link-secondary"
-                           th:href="@{/operation/connectingPerson/T/edit/{id}(id=${connect.getId()})}"
+                           href="/operation/connectingPerson/T/edit?id=<%=connect1.getId()%>"
                     >Edit</a>
                     </th>
                 </tr>
+                <%}%>
                 </tbody>
             </table>
         </div>
@@ -132,18 +144,18 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                <form th:method="POST" th:action="@{/operation/connectingPerson/S/add}" th:object="${newConnectingS}"
+                <form method="POST" action="/operation/connectingPerson/S/add"
                       class="needs-validation" novalidate>
                     <div class="form-group">
                         <label for="studentId" class="form-label">Enter student id: </label>
-                        <input type="number" th:field="*{studentId}" id="studentId" class="form-control"
+                        <input type="number" name="studentId" id="studentId" class="form-control"
                                required min="0" max="1000"/>
                         <div class="valid-feedback">Valid.</div>
                         <div class="invalid-feedback">Please fill this field correctly.</div>
                     </div>
                     <div class="form-group">
                         <label for="subjectIdS" class="form-label">Enter subject id: </label>
-                        <input type="number" th:field="*{subjectId}" id="subjectIdS" class="form-control"
+                        <input type="number" name="subjectId" id="subjectIdS" class="form-control"
                                required min="0" max="1000"/>
                         <div class="valid-feedback">Valid.</div>
                         <div class="invalid-feedback">Please fill this field correctly.</div>
@@ -169,18 +181,18 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                <form th:method="POST" th:action="@{/operation/connectingPerson/T/add}" th:object="${newConnectingT}"
+                <form method="POST" action="/operation/connectingPerson/T/add"
                       class="needs-validation" novalidate>
                     <div class="form-group">
                         <label for="teacherId" class="form-label">Enter teacher id: </label>
-                        <input type="number" th:field="*{teacherId}" id="teacherId" class="form-control"
+                        <input type="number" name="teacherId" id="teacherId" class="form-control"
                                required min="0" max="1000"/>
                         <div class="valid-feedback">Valid.</div>
                         <div class="invalid-feedback">Please fill this field correctly.</div>
                     </div>
                     <div class="form-group">
                         <label for="subjectId" class="form-label">Enter subject id: </label>
-                        <input type="number" th:field="*{subjectId}" id="subjectId" class="form-control"
+                        <input type="number" name="subjectId" id="subjectId" class="form-control"
                                required min="0" max="1000"/>
                         <div class="valid-feedback">Valid.</div>
                         <div class="invalid-feedback">Please fill this field correctly.</div>
@@ -192,7 +204,7 @@
         </div>
     </div>
 </div>
-<div th:insert="templates/footer :: copy"></div>
+<jsp:include page="/WEB-INF/views/templates/footer.jsp"/>
 
 <script>
     $(document).ready(function () {
@@ -217,14 +229,14 @@
 
 <script>
     // Disable form submissions if there are invalid fields
-    (function() {
+    (function () {
         'use strict';
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             // Get the forms we want to add validation styles to
             var forms = document.getElementsByClassName('needs-validation');
             // Loop over them and prevent submission
-            var validation = Array.prototype.filter.call(forms, function(form) {
-                form.addEventListener('submit', function(event) {
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
                     if (form.checkValidity() === false) {
                         event.preventDefault();
                         event.stopPropagation();
