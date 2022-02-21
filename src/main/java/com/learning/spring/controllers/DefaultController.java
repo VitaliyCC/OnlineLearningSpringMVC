@@ -44,24 +44,25 @@ public class DefaultController {
 
         if (user.getRole().equals(Role.STUDENT)) {
             Student student = studentDAO.showAllInfo(user.findStudent(studentDAO.showAll()));
+
             for (Subject subject : student.getSubjectList()) {
                 subject.setProgress(studentDAO.calculationSubjectProgress(student.getStudentId(),subject.getSubjectID()));
             }
+
             model.addAttribute("student",student);
-            LOGGER.debug("student logged in" + student.toString());
+
+            LOGGER.debug("Student logged in" + student.toString());
 
             return "/hello/students";
         } else if (user.getRole().equals(Role.TEACHER)) {
             model.addAttribute("teacher", teacherDAO.showAllInfo(user.findTeacher(teacherDAO.showAll())));
-            LOGGER.debug("admin logged in");
-            LOGGER.debug(user);
+
+            LOGGER.debug("Teacher logged in " +user.toString());
+
             return "/hello/teachers";
         } else {
-            model.addAttribute("admin", adminDAO.showAllInfo(user.getId()));
-           // mav = new ModelAndView("hello/admins");
-           // mav.addObject("admin", adminDAO.showAllInfo(user.getId()));
-            LOGGER.debug("admin logged in");
-            LOGGER.debug(user);
+            LOGGER.debug("Admin logged in " +user.toString());
+
             return "hello/admins";
         }
 

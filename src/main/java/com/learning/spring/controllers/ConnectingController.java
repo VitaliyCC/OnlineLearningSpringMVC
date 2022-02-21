@@ -36,29 +36,22 @@ public class ConnectingController {
         model.addAttribute("connectingS", connectingStudentDAO.showAll());
         model.addAttribute("connectingT", connectingTeacherDAO.showAll());
 
-        LOGGER.debug("Show all ConnectingStudent");
+        LOGGER.debug("Show all connectingStudent");
 
         return "connectingPerson/operationsOnConnectingPerson";
     }
-
-   /* @GetMapping("/show/{id}")
-    @PreAuthorize("hasAnyAuthority('users:check','users:write')")
-    public String showConnectingStudentIndex(@PathVariable("id") int id, Model model) {
-        model.addAttribute("connectingS", connectingStudentDAO.showAllInfo(id));
-        LOGGER.debug("Show ConnectingStudent with " + id);
-
-        return "connectingStudents/showInfo";
-    }*/
 
     @GetMapping("/S/edit")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String editConnectingStudentIndex(@RequestParam("id") int id, Model model) {
         ConnectingStudent connectingStudent = connectingStudentDAO.showAllInfo(id);
         ConnectingTeacher connectingTeacher = connectingTeacherDAO.showAllInfo(id);
+
         model.addAttribute("connectingS", connectingStudent);
         model.addAttribute("connectingT", connectingTeacher);
-        LOGGER.debug("Show ConnectingStudent  " + connectingStudent.toString());
-        LOGGER.debug("Show ConnectingStudent  " + connectingTeacher.toString());
+
+        LOGGER.debug("Show connectingStudent  " + connectingStudent.toString());
+        LOGGER.debug("Show connectingStudent  " + connectingTeacher.toString());
 
         return "connectingPerson/editConnectingStudent";
     }
@@ -66,8 +59,10 @@ public class ConnectingController {
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String editConnectingTeacherIndex(@RequestParam("id") int id, Model model) {
         ConnectingTeacher connectingTeacher = connectingTeacherDAO.showAllInfo(id);
+
         model.addAttribute("connectingT", connectingTeacher);
-        LOGGER.debug("Show ConnectingTeacher  " + connectingTeacher.toString());
+
+        LOGGER.debug("Show connectingTeacher  " + connectingTeacher.toString());
 
         return "connectingPerson/editConnectingTeacher";
     }
@@ -75,32 +70,27 @@ public class ConnectingController {
     @PostMapping("/S/add")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String addNewConnectingStudent(@ModelAttribute("connectingS") ConnectingStudent connectingStudent) {
-        System.out.println(connectingStudent.toString());
+
         try {
             connectingStudentDAO.save(connectingStudent);
         } catch (SQLException e) {
-            System.out.println(e);
-            LOGGER.error(e);
+            LOGGER.error("Incorrect connecting student to save "+e);
         }
 
-        LOGGER.debug("Save new ConnectingStudent" + connectingStudent.toString());
-
+        LOGGER.debug("Save new connectingStudent" + connectingStudent.toString());
 
         return "redirect:/operation/connectingPerson";
     }
     @PostMapping("/T/add")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String addNewConnectingTeacher(@ModelAttribute("connectingT") ConnectingTeacher connectingTeacher) {
-        System.out.println(connectingTeacher.toString());
         try {
             connectingTeacherDAO.save(connectingTeacher);
         } catch (SQLException e) {
-            System.out.println(e);
-            LOGGER.error(e);
+            LOGGER.error("Incorrect connecting teacher to save "+e);
         }
 
-        LOGGER.debug("Save new ConnectingTeacher" + connectingTeacher.toString());
-
+        LOGGER.debug("Save new connectingTeacher" + connectingTeacher.toString());
 
         return "redirect:/operation/connectingPerson";
     }
@@ -108,7 +98,7 @@ public class ConnectingController {
     @PostMapping("/S/update")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String updateConnectingStudent(@ModelAttribute("connectingS") ConnectingStudent connectingStudent, @RequestParam("id") int id) {
-        LOGGER.debug("Update ConnectingStudent" + connectingStudent.toString());
+        LOGGER.debug("Update connectingStudent" + connectingStudent.toString());
 
         connectingStudentDAO.update(id, connectingStudent);
 
@@ -117,7 +107,7 @@ public class ConnectingController {
     @PostMapping("/T/update")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String updateConnectingTeacher(@ModelAttribute("connectingT") ConnectingTeacher connectingTeacher, @RequestParam("id") int id) {
-        LOGGER.debug("Update ConnectingStudent" + connectingTeacher.toString());
+        LOGGER.debug("Update connectingStudent" + connectingTeacher.toString());
 
         connectingTeacherDAO.update(id, connectingTeacher);
 
@@ -126,7 +116,7 @@ public class ConnectingController {
     @PostMapping("/S/delete")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String deleteConnectingStudent(@RequestParam("id") int id) {
-        LOGGER.debug("Delete ConnectingStudent N" + id);
+        LOGGER.debug("Delete connectingStudent N" + id);
 
         connectingStudentDAO.delete(id);
 
@@ -136,7 +126,7 @@ public class ConnectingController {
     @PostMapping("/T/delete")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String deleteConnectingTeacher(@RequestParam("id") int id) {
-        LOGGER.debug("Delete ConnectingTeacher N" + id);
+        LOGGER.debug("Delete connectingTeacher N" + id);
 
         connectingTeacherDAO.delete(id);
 

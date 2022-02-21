@@ -19,7 +19,7 @@ public class ReportController {
 
     private final ReportDAO reportDAO;
 
-    private final Logger LOGGER = Logger.getLogger(ReportDAO.class);
+    private final Logger LOGGER = Logger.getLogger(ReportController.class);
     @Autowired
     public ReportController(ReportDAO reportDAO) {
         this.reportDAO = reportDAO;
@@ -35,7 +35,7 @@ public class ReportController {
         report.setSendTime(Date.valueOf(LocalDate.now()));
 
         model.addAttribute("report", report);
-        LOGGER.debug("Show Report with " + id);
+        LOGGER.debug("Show report with " + id);
 
         return "tasks/newReport";
     }
@@ -43,11 +43,9 @@ public class ReportController {
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('users:read')")
     public String addNewReport(@ModelAttribute("report") Report report) throws SQLException {
-        System.out.println(report.toString());
         reportDAO.save(report);
 
-        LOGGER.debug("Save new Report" + report.toString());
-
+        LOGGER.debug("Save new report" + report.toString());
 
         return "redirect:/index";
     }

@@ -40,11 +40,13 @@ public class StudentController {
     @PreAuthorize("hasAnyAuthority('users:check','users:write')")
     public String showStudentIndex(@RequestParam("id") int id, Model model) {
         Student student = studentDAO.showAllInfo(id);
+
         model.addAttribute("student", student);
         model.addAttribute("subjects", student.getSubjectList());
         model.addAttribute("reports", student.getReportList());
         model.addAttribute("reviews", student.getReviewMap());
-        LOGGER.debug("show student with " + id);
+
+        LOGGER.debug("Show student with " + id);
 
         return "students/showInfo";
     }
@@ -53,6 +55,7 @@ public class StudentController {
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String editStudentIndex(@RequestParam("id") int id, Model model) {
         Student student = studentDAO.showAllInfo(id);
+
         model.addAttribute("student", student);
         LOGGER.debug("Show student  " + student.toString());
 
@@ -75,11 +78,10 @@ public class StudentController {
             studentDAO.save(student);
             userDAO.save(user);
         } catch (SQLException e) {
-            LOGGER.error("Save Student");
-            e.printStackTrace();
+            LOGGER.error("Incorrect student to save "+e);
         }
 
-        LOGGER.debug("Save new Student" + student.toString());
+        LOGGER.debug("Save new student" + student.toString());
         LOGGER.debug("Save new user" + user.toString());
 
         return "redirect:/operation/student";
@@ -93,7 +95,6 @@ public class StudentController {
                                 @RequestParam("login") String login,
                                 @RequestParam("role") String role,
                                 @RequestParam("id") int id) {
-
         Student student = new Student();
         student.setName(name);
         student.setSurname(surname);

@@ -22,7 +22,7 @@ public class TaskController {
     private final SubjectDAO subjectDAO;
     private final ReportDAO reportDAO;
 
-    private final Logger LOGGER = Logger.getLogger(ReviewDAO.class);
+    private final Logger LOGGER = Logger.getLogger(TaskController.class);
 
     @Autowired
     public TaskController(TaskDAO taskDAO, SubjectDAO subjectDAO, ReportDAO reportDAO) {
@@ -39,11 +39,13 @@ public class TaskController {
                                   @RequestParam("idSt") Integer idSt,
                                   @RequestParam("idT") Integer idT) {
         Subject subject = subjectDAO.showAllInfo(idS);
+
         if (idSt != -1) {
             for (Task task : subject.getTaskList()) {
                 task.setGrade(taskDAO.calculationSubjectProgress(idSt, task.getTaskName()));
             }
         }
+
         model.addAttribute("subject", subject);
         model.addAttribute("idSt", idSt);
         model.addAttribute("idT", idT);
@@ -57,8 +59,8 @@ public class TaskController {
     @PreAuthorize("hasAnyAuthority('users:write','users:check')")
     public String showTaskIndex(@RequestParam("id") int id,
                                 @RequestParam("nameT") String name, Model model) {
-        System.out.println(name);
         Task task = taskDAO.showAllInfo(name);
+
         for (Report report : task.getReportList()) {
             report.setChecked(reportDAO.isCheckedReport(report.getReportId()));
         }
@@ -66,7 +68,7 @@ public class TaskController {
         model.addAttribute("task", task);
         model.addAttribute("idT", id);
 
-        LOGGER.debug("Show Task with " + id);
+        LOGGER.debug("Show task with " + id);
 
         return "tasks/showInfo";
     }

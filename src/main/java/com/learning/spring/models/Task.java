@@ -66,4 +66,15 @@ public class Task {
     public void setMaxGrade(Integer maxGrade) {
         this.maxGrade = maxGrade;
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "taskName='" + taskName + '\'' +
+                ", subjectId=" + subjectId +
+                ", subject='" + subject + '\'' +
+                ", maxGrade=" + maxGrade +
+                ", grade=" + grade +
+                '}';
+    }
 }

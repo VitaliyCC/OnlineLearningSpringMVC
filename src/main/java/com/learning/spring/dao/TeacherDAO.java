@@ -28,7 +28,7 @@ public class TeacherDAO {
             }
 
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error("Error trying to show all teacher " + e);
         }
 
         return teachers;
@@ -54,22 +54,19 @@ public class TeacherDAO {
             teacher = parseTeacher(resultSet);
 
             preparedStatementReview.setInt(1, teacher.getTeacherId());
-
             resultSet = preparedStatementReview.executeQuery();
+
 
             List<Review> reviewList = new LinkedList<>();
             while (resultSet.next()) {
                 reviewList.add(ReviewDAO.parseReview(resultSet));
             }
-
             teacher.setReviewList(reviewList);
 
             preparedStatementSubjects.setInt(1, teacher.getTeacherId());
-
             resultSet = preparedStatementSubjects.executeQuery();
 
             List<Subject> subjectList = new LinkedList();
-
             while (resultSet.next()) {
                 subjectList.add(SubjectDAO.parseSubject(resultSet));
             }
@@ -78,14 +75,13 @@ public class TeacherDAO {
 
         } catch (SQLException e) {
 
-            LOGGER.error(e);
+            LOGGER.error("Error trying to show teacher with id " + id + "-" + e);
         }
         return teacher;
     }
 
     public Boolean update(Integer id, Teacher teacher) {
         try (Connection connection = JDBC.getInstance().getConnection();
-
              PreparedStatement preparedStatementStudent =
                      connection.prepareStatement("UPDATE Teacher set surname=?, name=?, salary=?, patronymic=? where teacher_id =?");
         ) {
@@ -98,7 +94,7 @@ public class TeacherDAO {
             preparedStatementStudent.executeUpdate();
 
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error("Error trying to update teacher with id " + id + "-" + e);
         }
         return true;
     }
@@ -108,18 +104,16 @@ public class TeacherDAO {
              PreparedStatement preparedStatementStudent =
                      connection.prepareStatement("delete from Teacher where teacher_id =?");
         ) {
-
             preparedStatementStudent.setInt(1, id);
             preparedStatementStudent.execute();
 
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error("Error trying to delete teacher with id " + id + "-" + e);
         }
         return true;
     }
 
     public Boolean save(Teacher teacher) throws SQLException {
-
         Connection connection = JDBC.getInstance().getConnection();
         PreparedStatement preparedStatement =
                 connection.prepareStatement("INSERT INTO Teacher (teacher_id, id, surname, name, salary, patronymic) VALUES (?, ?, ?, ?, ?,?)");
@@ -146,25 +140,16 @@ public class TeacherDAO {
         return true;
     }
 
-    private static Teacher parseTeacher(ResultSet resultSet) {
-        Teacher temp = null;
-        try {
-            temp = new Teacher(
-                    resultSet.getInt(1),
-                    resultSet.getInt(2),
-                    resultSet.getString(3),
-                    resultSet.getString(4),
-                    resultSet.getInt(5),
-                    resultSet.getString(6),
-                    resultSet.getString(7),
-                    resultSet.getString(8),
-                    resultSet.getString(9));
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return temp;
+    private static Teacher parseTeacher(ResultSet resultSet) throws SQLException {
+        return new Teacher(
+                resultSet.getInt(1),
+                resultSet.getInt(2),
+                resultSet.getString(3),
+                resultSet.getString(4),
+                resultSet.getInt(5),
+                resultSet.getString(6),
+                resultSet.getString(7),
+                resultSet.getString(8),
+                resultSet.getString(9));
     }
-
-
 }

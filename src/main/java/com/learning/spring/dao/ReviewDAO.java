@@ -13,8 +13,6 @@ import java.util.List;
 
 @Component
 public class ReviewDAO {
-    private final Logger LOGGER = Logger.getLogger(ReviewDAO.class);
-
     public void save(Review review) throws SQLException {
         Connection connection = JDBC.getInstance().getConnection();
         PreparedStatement preparedStatement =

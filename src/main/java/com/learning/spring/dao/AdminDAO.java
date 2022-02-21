@@ -31,7 +31,7 @@ public class AdminDAO {
             }
 
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error("Error trying to show all admins " + e);
         }
 
         return admins;
@@ -50,7 +50,7 @@ public class AdminDAO {
             admin = parseAdmin(resultSet);
 
         } catch (SQLException e) {
-
+            LOGGER.error("Error trying to show admin with id " + id + "-" + e);
         }
         return admin;
     }
@@ -69,7 +69,7 @@ public class AdminDAO {
             preparedStatementStudent.executeUpdate();
 
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error("Error trying to update admin with id " + id + "-" + e);
         }
         return true;
     }
@@ -84,7 +84,7 @@ public class AdminDAO {
             preparedStatementStudent.execute();
 
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error("Error trying to delete admin with id " + id + "-" + e);
         }
         return true;
     }

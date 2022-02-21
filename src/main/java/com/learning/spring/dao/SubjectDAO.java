@@ -15,7 +15,6 @@ public class SubjectDAO {
 
     public List<Subject> showAll() {
         List<Subject> subjectList = new LinkedList<>();
-
         try (
                 Connection connection = JDBC.getInstance().getConnection();
                 Statement statement = connection.createStatement();
@@ -28,7 +27,7 @@ public class SubjectDAO {
             }
 
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error("Error trying to show all subjects " + e);
         }
 
         return subjectList;
@@ -37,7 +36,6 @@ public class SubjectDAO {
     public Subject showAllInfo(Integer id) {
         Subject subject = null;
         try (Connection connection = JDBC.getInstance().getConnection();
-
              PreparedStatement preparedStatementSubject =
                      connection.prepareStatement("SELECT * from SUbject  Where subject_id=?");
              PreparedStatement preparedStatementTask =
@@ -61,6 +59,7 @@ public class SubjectDAO {
             }
             subject.setTaskList(temp);
 
+
             preparedStatementConnT.setInt(1, subject.getSubjectID());
             resultSet = preparedStatementConnT.executeQuery();
             List<ConnectingTeacher> tempT = new LinkedList<>();
@@ -68,6 +67,7 @@ public class SubjectDAO {
                 tempT.add(ConnectingTeacherDAO.parseConnectingTeacher(resultSet));
             }
             subject.setConnectingTeachers(tempT);
+
 
             preparedStatementConnS.setInt(1, subject.getSubjectID());
             resultSet = preparedStatementConnS.executeQuery();
@@ -78,8 +78,7 @@ public class SubjectDAO {
             subject.setConnectingStudents(tempS);
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            LOGGER.error(e);
+            LOGGER.error("Error trying to show subject with id " + id + "-" + e);
         }
         return subject;
     }
@@ -89,7 +88,6 @@ public class SubjectDAO {
              PreparedStatement preparedStatement =
                      connection.prepareStatement("UPDATE SUBJECT set subject_name=?, semester=?, max_grade=? WHERE SUBJECT_ID =?");
         ) {
-
             preparedStatement.setString(1, subject.getSubjectName());
             preparedStatement.setInt(2, subject.getSemester());
             preparedStatement.setInt(3, subject.getMaxGrade());
@@ -97,8 +95,7 @@ public class SubjectDAO {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            LOGGER.error(e);
+            LOGGER.error("Error trying to update subject with id " + id + "-" + e);
         }
         return true;
     }
@@ -108,13 +105,11 @@ public class SubjectDAO {
              PreparedStatement preparedStatement =
                      connection.prepareStatement("delete from SUBJECT where SUBJECT_ID =?");
         ) {
-
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            LOGGER.error(e);
+            LOGGER.error("Error trying to delete subject with id " + id + "-" + e);
         }
         return true;
     }

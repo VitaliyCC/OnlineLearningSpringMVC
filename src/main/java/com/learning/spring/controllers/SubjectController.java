@@ -31,7 +31,7 @@ public class SubjectController {
     public String workingWithSubject(Model model) {
         model.addAttribute("subjects", subjectDAO.showAll());
 
-        LOGGER.debug("Show all Subject");
+        LOGGER.debug("Show all subject");
 
         return "subjects/operationsOnSubject";
     }
@@ -40,9 +40,10 @@ public class SubjectController {
     @PreAuthorize("hasAnyAuthority('users:write','users:read','users:check')")
     public String showSubjectIndex(@RequestParam("id") int id, Model model) {
         Subject subject = subjectDAO.showAllInfo(id);
+
         model.addAttribute("subject", subject);
 
-        LOGGER.debug("Show Subject with " + id);
+        LOGGER.debug("Show subject with " + id);
 
         return "subjects/showInfo";
     }
@@ -51,8 +52,10 @@ public class SubjectController {
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String editSubject(@RequestParam("id") int id, Model model) {
         Subject subject = subjectDAO.showAllInfo(id);
+
         model.addAttribute("subject", subject);
-        LOGGER.debug("Show Subject  " + subject.toString());
+
+        LOGGER.debug("Show subject  " + subject.toString());
 
         return "subjects/editSubject";
     }
@@ -60,15 +63,13 @@ public class SubjectController {
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String addNewSubject(@ModelAttribute("subject") Subject subject) {
-
         try {
             subjectDAO.save(subject);
         } catch (SQLException e) {
-            LOGGER.error("Can`t save new Subject " + e);
+            LOGGER.error("Incorrect student to save "+ e);
         }
 
-        LOGGER.debug("Save new Subject" + subject.toString());
-
+        LOGGER.debug("Save new subject" + subject.toString());
 
         return "redirect:/operation/subject";
     }
@@ -76,7 +77,7 @@ public class SubjectController {
     @PostMapping("/update")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String updateSubject(@ModelAttribute("subject") Subject subject, @RequestParam("id") int id) {
-        LOGGER.debug("Update Subject" + subject.toString());
+        LOGGER.debug("Update subject" + subject.toString());
 
         subjectDAO.update(id, subject);
 
@@ -86,7 +87,7 @@ public class SubjectController {
     @PostMapping("/delete")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String deleteSubject(@RequestParam("id") int id) {
-        LOGGER.debug("Delete Subject N" + id);
+        LOGGER.debug("Delete subject N" + id);
 
         subjectDAO.delete(id);
 

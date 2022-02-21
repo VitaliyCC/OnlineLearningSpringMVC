@@ -23,16 +23,6 @@ public class Subject {
         this.maxGrade = maxGrade;
     }
 
-    @Override
-    public String toString() {
-        return "Subject{" +
-                "subjectID=" + subjectID +
-                ", subjectName='" + subjectName + '\'' +
-                ", semester=" + semester +
-                ", maxGrade=" + maxGrade +
-                '}';
-    }
-
     public Integer getProgress() {
         return progress;
     }
@@ -103,5 +93,16 @@ public class Subject {
 
     public void setMaxGrade(Integer maxGrade) {
         this.maxGrade = maxGrade;
+    }
+
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "subjectID=" + subjectID +
+                ", subjectName='" + subjectName + '\'' +
+                ", semester=" + semester +
+                ", maxGrade=" + maxGrade +
+                ", progress=" + progress +
+                '}';
     }
 }

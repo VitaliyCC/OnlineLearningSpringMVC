@@ -14,6 +14,7 @@ public class TaskDAO {
 
     public Task showAllInfo(String taskName) {
         Task task = null;
+
         try (Connection connection = JDBC.getInstance().getConnection();
              PreparedStatement preparedStatementReport =
                      connection.prepareStatement("SELECT * from REPORT Where TASK_NAME=?");
@@ -23,8 +24,8 @@ public class TaskDAO {
             preparedStatementTask.setString(1, taskName);
             ResultSet resultSet = preparedStatementTask.executeQuery();
 
-             if(resultSet.next())
-            task = parseTask(resultSet);
+            if (resultSet.next())
+                task = parseTask(resultSet);
 
             preparedStatementReport.setString(1, taskName);
             resultSet = preparedStatementReport.executeQuery();
@@ -37,8 +38,7 @@ public class TaskDAO {
             task.setReportList(temp);
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            LOGGER.error(e);
+            LOGGER.error("Error trying to show task with name " + taskName + "-" + e);
         }
 
         return task;
@@ -69,6 +69,7 @@ public class TaskDAO {
 
     public Integer calculationSubjectProgress(Integer studentId, String taskName) {
         Integer result = 0;
+
         try (Connection connection = JDBC.getInstance().getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("SELECT grade FROM REVIEW " +
@@ -79,11 +80,12 @@ public class TaskDAO {
             preparedStatement.setString(1, taskName);
             preparedStatement.setInt(2, studentId);
             ResultSet resultSet = preparedStatement.executeQuery();
+
             if (resultSet.next())
                 result = resultSet.getInt(1);
 
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error("Error trying to calculation subject progress" + e);
         }
         return result;
     }

@@ -21,7 +21,7 @@ import java.sql.SQLException;
 public class TeacherController {
 
     private final TeacherDAO teacherDAO;
-    private final Logger LOGGER = Logger.getLogger(ReviewDAO.class);
+    private final Logger LOGGER = Logger.getLogger(TeacherController.class);
     private final UserDAO userDAO;
 
     @Autowired
@@ -36,7 +36,7 @@ public class TeacherController {
     public String workingWithTeacher(Model model) {
         model.addAttribute("teachers", teacherDAO.showAll());
 
-        LOGGER.debug("Show all Teacher");
+        LOGGER.debug("Show all teachers");
 
         return "teachers/operationsOnTeacher";
     }
@@ -45,10 +45,11 @@ public class TeacherController {
     @PreAuthorize("hasAnyAuthority('users:write','users:read','users:check')")
     public String showTeacherIndex(@RequestParam("id") int id, Model model) {
         Teacher teacher = teacherDAO.showAllInfo(id);
+
         model.addAttribute("teacher",teacher);
 
-        LOGGER.debug("show teacher with " + id);
-        LOGGER.debug("show teacher with " + teacher.toString());
+        LOGGER.debug("Show teacher " + teacher.toString());
+
         return "teachers/showInfo";
     }
 
@@ -56,8 +57,10 @@ public class TeacherController {
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String editTeacher(@RequestParam("id") int id, Model model) {
         Teacher teacher = teacherDAO.showAllInfo(id);
+
         model.addAttribute("teacher", teacher);
-        LOGGER.debug("Show Teacher  " + teacher.toString());
+
+        LOGGER.debug("Show teacher  " + teacher.toString());
 
         return "teachers/editTeacher";
     }
@@ -65,18 +68,17 @@ public class TeacherController {
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String addNewTeacher(@ModelAttribute("teacher") Teacher teacher) {
-
         User user = null;
+
         try {
-            teacherDAO.save(teacher);
             user = new User(teacher.getLogin(), null, Role.TEACHER);
+            teacherDAO.save(teacher);
             userDAO.save(user);
         } catch (SQLException e) {
-            LOGGER.error("Save Teacher"+e);
-            e.printStackTrace();
+            LOGGER.error("Incorrect student to save "+e);
         }
 
-        LOGGER.debug("Save new Teacher" + teacher.toString());
+        LOGGER.debug("Save new teacher" + teacher.toString());
         LOGGER.debug("Save new user" + user.toString());
 
         return "redirect:/operation/teacher";

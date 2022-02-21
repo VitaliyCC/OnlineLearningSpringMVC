@@ -8,8 +8,6 @@ import java.sql.*;
 
 @Component
 public class ReportDAO {
-    private final Logger LOGGER = Logger.getLogger(ReportDAO.class);
-
     public void save(Report report) throws SQLException {
         Connection connection = JDBC.getInstance().getConnection();
         PreparedStatement preparedStatement =
@@ -17,8 +15,6 @@ public class ReportDAO {
                         "VALUES (?, ?, ?, ?,?)");
 
         Statement statement = connection.createStatement();
-
-
         ResultSet resultSet = statement.executeQuery("SELECT MAX(REPORT_ID) FROM REPORT");
         resultSet.next();
         Report.setCountReport(resultSet.getInt(1) + 1);

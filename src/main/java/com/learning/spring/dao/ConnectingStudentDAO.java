@@ -29,7 +29,7 @@ public class ConnectingStudentDAO {
             }
 
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error("Error trying to show all connecting student " + e);
         }
 
         return connectingStudents;
@@ -50,7 +50,7 @@ public class ConnectingStudentDAO {
 
 
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error("Error trying to show connecting student with id " + id + "-" + e);
         }
 
         return connectingStudent;
@@ -61,15 +61,13 @@ public class ConnectingStudentDAO {
              PreparedStatement preparedStatement =
                      connection.prepareStatement("UPDATE Connecting_Student set student_id=?, subject_id=? WHERE id =?");
         ) {
-
             preparedStatement.setInt(1, connectingStudent.getStudentId());
             preparedStatement.setInt(2, connectingStudent.getSubjectId());
             preparedStatement.setInt(3, id);
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            LOGGER.error(e);
+            LOGGER.error("Error trying to update connecting student with id " + id + "-" + e);
         }
         return true;
     }
@@ -79,13 +77,11 @@ public class ConnectingStudentDAO {
              PreparedStatement preparedStatement =
                      connection.prepareStatement("delete from Connecting_Student where id =?");
         ) {
-
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            LOGGER.error(e);
+            LOGGER.error("Error trying to delete connecting student with id " + id + "-" + e);
         }
         return true;
     }
@@ -96,7 +92,6 @@ public class ConnectingStudentDAO {
                 connection.prepareStatement("INSERT INTO Connecting_Student ( student_id,subject_id,id) VALUES (?, ?, ?)");
 
         Statement statement = connection.createStatement();
-
 
         ResultSet resultSet = statement.executeQuery("SELECT MAX(id) FROM Connecting_Student");
         resultSet.next();

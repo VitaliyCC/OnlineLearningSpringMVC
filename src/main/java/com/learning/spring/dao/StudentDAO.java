@@ -20,6 +20,7 @@ public class StudentDAO {
 
     public Integer calculationSubjectProgress(Integer studentId, Integer subjectId) {
         Integer result = 0;
+
         try (Connection connection = JDBC.getInstance().getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("SELECT SUM(grade) " +
@@ -39,12 +40,11 @@ public class StudentDAO {
             preparedStatement.setInt(2, subjectId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            resultSet.next();
-            result = resultSet.getInt(1);
+            if (resultSet.next())
+                result = resultSet.getInt(1);
 
         } catch (SQLException e) {
-
-            LOGGER.error(e);
+            LOGGER.error("Error trying to calculation subject progress " + e);
         }
         return result;
     }
@@ -64,12 +64,11 @@ public class StudentDAO {
             }
 
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error("Error trying to show all students " + e);
         }
 
         return studentList;
     }
-
 
     public Boolean save(Student student) throws SQLException {
 
@@ -97,10 +96,8 @@ public class StudentDAO {
         return true;
     }
 
-
     public Boolean update(int id, Student student) {
         try (Connection connection = JDBC.getInstance().getConnection();
-
              PreparedStatement preparedStatementStudent =
                      connection.prepareStatement("UPDATE Students set   SURNAME=?, NAME=?, PATRONYMIC=? where student_id =?");
         ) {
@@ -112,25 +109,21 @@ public class StudentDAO {
             preparedStatementStudent.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            LOGGER.error(e);
+            LOGGER.error("Error trying to update student with id " + id + "-" + e);
         }
         return true;
     }
-
 
     public Boolean delete(Integer id) {
         try (Connection connection = JDBC.getInstance().getConnection();
              PreparedStatement preparedStatementStudent =
                      connection.prepareStatement("delete from Students where student_id =?");
         ) {
-
             preparedStatementStudent.setInt(1, id);
             preparedStatementStudent.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            LOGGER.error(e);
+            LOGGER.error("Error trying to delete student with id" + id + "-" + e);
         }
         return true;
     }
@@ -196,8 +189,7 @@ public class StudentDAO {
             student.setSubjectList(subjectList);
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            LOGGER.error(e);
+            LOGGER.error("Error trying to show student with id " + id + "-" + e);
         }
         return student;
     }

@@ -36,7 +36,7 @@ public class AdminController {
         model.addAttribute("admins", adminDAO.showAll());
         model.addAttribute("newAdmin", new Admin());
 
-        LOGGER.debug("Show all Admin");
+        LOGGER.debug("Show all admins");
 
         return "admins/operationsAdmin";
     }
@@ -45,7 +45,7 @@ public class AdminController {
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String editAdmin(@RequestParam("id") int id, Model model) {
         Admin admin = adminDAO.showAllInfo(id);
-        LOGGER.debug("Show Admin  " + admin.toString());
+        LOGGER.debug("Show admin to edit  " + admin.toString());
         model.addAttribute("admin", admin);
 
         return "admins/editAdmin";
@@ -56,14 +56,14 @@ public class AdminController {
     public String addNewAdmin(@ModelAttribute("newAdmin") Admin admin) {
         User user = null;
 
-        LOGGER.debug("Save new Admin" + admin.toString());
+        LOGGER.debug("Save new admin" + admin.toString());
         try {
             user = new User(admin.getLogin(), null, Role.ADMIN);
             LOGGER.debug("Save new user" + user.toString());
             adminDAO.save(admin);
             userDAO.save(user);
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error("Incorrect student to save "+e);
         }
 
 
@@ -73,7 +73,7 @@ public class AdminController {
     @PostMapping("/update")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String updateAdmin(@ModelAttribute("admin") Admin admin, @RequestParam("id") int id) {
-        LOGGER.debug("Update Admin" + admin.toString());
+        LOGGER.debug("Update admin" + admin.toString());
         User user = new User();
         user.setLogin(admin.getLogin());
         user.setRoleString(admin.getRole());
@@ -88,7 +88,7 @@ public class AdminController {
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String deleteAdmin(@RequestParam("id") int id) {
         int temp = adminDAO.showAllInfo(id).getId();
-        LOGGER.debug("Delete Admin N" + id);
+        LOGGER.debug("Delete admin with N" + id);
 
         adminDAO.delete(id);
         userDAO.delete(temp);

@@ -21,7 +21,7 @@ public class ReviewController {
     private final ReviewDAO reviewDAO;
     private final StudentDAO studentDAO;
 
-    private final Logger LOGGER = Logger.getLogger(ReviewDAO.class);
+    private final Logger LOGGER = Logger.getLogger(ReviewController.class);
 
     @Autowired
     public ReviewController(ReviewDAO reviewDAO, StudentDAO studentDAO) {
@@ -32,10 +32,9 @@ public class ReviewController {
     @GetMapping("")
     @PreAuthorize("hasAnyAuthority('users:read,users:admin','users:check')")
     public String workingWithReview(@RequestParam("id") Integer id, Model model) {
-
         model.addAttribute("student", studentDAO.showAllInfo(id));
 
-        LOGGER.debug("Show all Review for student "+id);
+        LOGGER.debug("Show all review for student "+id);
 
         return "tasks/student`sReview";
     }
@@ -50,8 +49,9 @@ public class ReviewController {
         review.setTimeReview(Date.valueOf(LocalDate.now()));
         review.setReportId(id);
         review.setTeacherId(idT);
+
         model.addAttribute("review",review);
-        LOGGER.debug("Show Review with " + id);
+        LOGGER.debug("Show review with " + id);
 
         return "tasks/newReview";
     }
@@ -59,11 +59,9 @@ public class ReviewController {
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('users:write','users:check')")
     public String addNewReview(@ModelAttribute("review") Review review) throws SQLException {
-
         reviewDAO.save(review);
 
-        LOGGER.debug("Save new Review" + review.toString());
-
+        LOGGER.debug("Save new review" + review.toString());
 
         return "redirect:/index";
     }
