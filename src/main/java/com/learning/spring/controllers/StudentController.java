@@ -67,18 +67,22 @@ public class StudentController {
     public String addNewStudent(@RequestParam("name") String name,
                                 @RequestParam("surname") String surname,
                                 @RequestParam("patronymic") String patronymic,
+                                @RequestParam("password") String password,
                                 @RequestParam("login") String login) throws SQLException {
         Student student = new Student();
         student.setName(name);
         student.setSurname(surname);
         student.setPatronymic(patronymic);
+        student.setPassword(password);
 
-        User user = new User(login, null, Role.STUDENT);
+        User user = new User(login, student.getPassword(), Role.STUDENT);
         try {
             studentDAO.save(student);
             userDAO.save(user);
+
         } catch (SQLException e) {
             LOGGER.error("Incorrect student to save "+e);
+
             throw new SQLException("Incorrect student to save ");
         }
 

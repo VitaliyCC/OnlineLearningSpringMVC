@@ -12,6 +12,7 @@ public class Teacher {
     private Integer salary;
     private String login;
     private String role;
+    private String password;
     private List<Subject> subjectList;
     private List<Review> reviewList;
 
@@ -25,9 +26,18 @@ public class Teacher {
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
+        this.password =password;
         this.salary = salary;
         this.login = login;
         this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<Subject> getSubjectList() {

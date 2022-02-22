@@ -1,15 +1,11 @@
 package com.learning.spring.controllers;
 
 import com.learning.spring.dao.ReportDAO;
-import com.learning.spring.dao.ReviewDAO;
 import com.learning.spring.dao.SubjectDAO;
 import com.learning.spring.dao.TaskDAO;
 import com.learning.spring.models.Report;
-import com.learning.spring.models.Student;
 import com.learning.spring.models.Subject;
 import com.learning.spring.models.Task;
-import com.learning.spring.security.model.Role;
-import com.learning.spring.security.model.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -56,8 +52,12 @@ public class TaskController {
         model.addAttribute("idT", idT);
 
         LOGGER.debug("Show all Task for subject " + subject.toString());
-
-        return "tasks/subject`sTasks";
+        if (idSt != -1) {
+            return "tasks/subject`sTasksForStudent";
+        }
+        else {
+            return "tasks/subject`sTasksForTeacher";
+        }
     }
 
     @GetMapping("/show")

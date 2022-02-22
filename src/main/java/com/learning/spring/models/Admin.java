@@ -1,14 +1,14 @@
 package com.learning.spring.models;
 
 public class Admin {
-    private static Integer countAdmins=0;
+    private static Integer countAdmins = 0;
     private Integer adminId;
     private Integer id;
     private String name;
     private String patronymic;
     private String surname;
     private String login;
-
+    private String password;
     private String role;
 
     public Admin() {
@@ -20,9 +20,18 @@ public class Admin {
         this.id = id;
         this.name = name;
         this.patronymic = patronymic;
+        this.password = password;
         this.surname = surname;
         this.login = login;
         this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getLogin() {

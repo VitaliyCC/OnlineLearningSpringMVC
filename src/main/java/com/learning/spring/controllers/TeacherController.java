@@ -71,7 +71,7 @@ public class TeacherController {
         User user = null;
 
         try {
-            user = new User(teacher.getLogin(), null, Role.TEACHER);
+            user = new User(teacher.getLogin(), teacher.getPassword(), Role.TEACHER);
             teacherDAO.save(teacher);
             userDAO.save(user);
         } catch (SQLException e) {

@@ -1,121 +1,104 @@
-Create table Students
-(
-    student_id Integer           NOT NULL,
-    id         Integer Default 0 NOT NULL UNIQUE,
-    surname    Varchar2(20)      NOT NULL,
-    name       Varchar2(20)      NOT NULL,
-    patronymic Varchar2(30),
-    primary key (student_id)
-);
-Create table Teacher
-(
-    teacher_id Integer           NOT NULL,
-    id         Integer Default 0 NOT NULL UNIQUE,
-    surname    Varchar2(20)      NOT NULL,
-    name       Varchar2(20)      NOT NULL,
-    salary     Integer,
-    patronymic Varchar2(30),
-    primary key (teacher_id)
-);
-Create table Subject
-(
-    subject_id   Integer Default -1 NOT NULL,
-    subject_name Varchar2(20)       NOT NULL UNIQUE,
-    semester     Varchar2(30)       NOT NULL,
-    max_grade    Integer,
-    primary key (subject_id)
-);
-Create table Task
-(
-    task_name  Varchar2(30)       NOT NULL UNIQUE,
-    subject_id Integer Default -1 NOT NULL,
-    subject    Varchar2(50)       NOT NULL,
-    max_grade  Integer,
-    primary key (task_name, subject_id)
-);
-Create table Report
-(
-    report_id  Integer      NOT NULL UNIQUE,
-    solution   Varchar2(50) NOT NULL,
-    send_date  Date         NOT NULL,
-    student_id Integer      NOT NULL,
-    task_name  Varchar2(30) NOT NULL,
-    primary key (report_id, student_id, task_name)
+Create table Students (
+                          student_id Integer NOT NULL ,
+                          id Integer Default 0 NOT NULL  UNIQUE ,
+                          surname Varchar2 (20) NOT NULL ,
+                          name Varchar2 (20) NOT NULL ,
+                          patronymic Varchar2 (30),
+                          primary key (student_id)
 );
 
-Create table Review
-(
-    review_id   Integer NOT NULL UNIQUE,
-    teacher_id  Integer NOT NULL,
-    report_id   Integer NOT NULL,
-    grade       Integer NOT NULL,
-    time_review Date    NOT NULL,
-    primary key (review_id, teacher_id, report_id)
+Create table Teacher (
+                         teacher_id Integer NOT NULL ,
+                         id Integer Default 0 NOT NULL  UNIQUE ,
+                         surname Varchar2 (20) NOT NULL ,
+                         name Varchar2 (20) NOT NULL ,
+                         salary Integer,
+                         patronymic Varchar2 (30),
+                         primary key (teacher_id)
 );
 
-Create table Connecting_Student
-(
-    student_id Integer            NOT NULL,
-    subject_id Integer Default -1 NOT NULL,
-    id         Integer            NOT NULL,
-    primary key (student_id, subject_id, id)
+Create table Subject (
+                         subject_id Integer Default -1 NOT NULL ,
+                         subject_name Varchar2 (20) NOT NULL  UNIQUE ,
+                         semester Varchar2 (30) NOT NULL ,
+                         max_grade Integer,
+                         primary key (subject_id)
 );
 
-Create table Connecting_Teacher
-(
-    teacher_id Integer            NOT NULL,
-    subject_id Integer Default -1 NOT NULL,
-    id         Integer            NOT NULL,
-    primary key (teacher_id, subject_id, id)
+Create table Task (
+                      task_name Varchar2 (30) NOT NULL  UNIQUE ,
+                      subject_id Integer Default -1 NOT NULL ,
+                      subject Varchar2 (50) NOT NULL ,
+                      max_grade Integer,
+                      primary key (task_name,subject_id)
 );
 
-Create table Admin
-(
-    admin_id   Integer           NOT NULL,
-    id         Integer Default 0 NOT NULL UNIQUE,
-    name       Varchar2(30)      NOT NULL,
-    surname    Varchar2(30)      NOT NULL,
-    patronymic Varchar2(30),
-    primary key (admin_id)
+Create table Report (
+                        report_id Integer NOT NULL  UNIQUE ,
+                        solution Varchar2 (50) NOT NULL ,
+                        send_date Date NOT NULL ,
+                        student_id Integer NOT NULL ,
+                        task_name Varchar2 (30) NOT NULL ,
+                        primary key (report_id,student_id,task_name)
 );
 
-Create table Iogin_info
-(
-    id       Integer Default 0 NOT NULL,
-    password Varchar2(500)     NOT NULL,
-    username Varchar2(30)      NOT NULL,
-    role     Varchar2(30)      NOT NULL,
-    primary key (id)
+Create table Review (
+                        review_id Integer NOT NULL  UNIQUE ,
+                        teacher_id Integer NOT NULL ,
+                        report_id Integer NOT NULL ,
+                        grade Integer NOT NULL ,
+                        time_review Date NOT NULL ,
+                        primary key (review_id,teacher_id,report_id)
 );
 
-Alter table Report
-    add foreign key (student_id) references Students (student_id) on delete cascade;
+Create table Connecting_Student (
+                                    id Integer NOT NULL ,
+                                    student_id Integer NOT NULL ,
+                                    subject_id Integer Default -1 NOT NULL ,
+                                    primary key (id,student_id,subject_id)
+);
 
-Alter table Connecting_Student
-    add foreign key (student_id) references Students (student_id) on delete cascade;
+Create table Connecting_Teacher (
+                                    id Integer NOT NULL ,
+                                    teacher_id Integer NOT NULL ,
+                                    subject_id Integer Default -1 NOT NULL ,
+                                    primary key (id,teacher_id,subject_id)
+);
 
-Alter table Review
-    add foreign key (teacher_id) references Teacher (teacher_id) on delete set null;
+Create table Admin (
+                       admin_id Integer NOT NULL ,
+                       id Integer Default 0 NOT NULL  UNIQUE ,
+                       name Varchar2 (30) NOT NULL ,
+                       surname Varchar2 (30) NOT NULL ,
+                       patronymic Varchar2 (30),
+                       primary key (admin_id)
+);
 
-Alter table Connecting_Teacher
-    add foreign key (teacher_id) references Teacher (teacher_id) on delete cascade;
+Create table Iogin_info (
+                            id Integer Default 0 NOT NULL ,
+                            password Varchar2 (500) NOT NULL ,
+                            username Varchar2 (30) NOT NULL  UNIQUE ,
+                            role Varchar2 (30) NOT NULL ,
+                            primary key (id)
+);
 
-Alter table Connecting_Student
-    add foreign key (subject_id) references Subject (subject_id) on delete cascade;
+Alter table Report add  foreign key (student_id) references Students (student_id)  on delete cascade;
 
-Alter table Connecting_Teacher
-    add foreign key (subject_id) references Subject (subject_id) on delete cascade;
+Alter table Connecting_Student add  foreign key (student_id) references Students (student_id)  on delete cascade;
 
-Alter table Task
-    add foreign key (subject_id) references Subject (subject_id) on delete cascade;
+Alter table Review add  foreign key (teacher_id) references Teacher (teacher_id)  on delete set null;
 
-Alter table Report
-    add foreign key (task_name) references Task (task_name) on delete cascade;
+Alter table Connecting_Teacher add  foreign key (teacher_id) references Teacher (teacher_id)  on delete cascade;
 
-Alter table Review
-    add foreign key (report_id) references Report (report_id) on delete cascade;
+Alter table Connecting_Student add  foreign key (subject_id) references Subject (subject_id)  on delete cascade;
 
+Alter table Connecting_Teacher add  foreign key (subject_id) references Subject (subject_id)  on delete cascade;
 
+Alter table Task add  foreign key (subject_id) references Subject (subject_id)  on delete cascade;
+
+Alter table Report add  foreign key (task_name) references Task (task_name)  on delete cascade;
+
+Alter table Review add  foreign key (report_id) references Report (report_id)  on delete cascade;
 -------------------------------
 INSERT INTO Iogin_info (id, password, username, role)
 VALUES (1, '$2a$12$Kvc6ZRhW.fZYTc4w9mRIA.yCjVGUs0ie.jgm4K.16Ktl.AktqWf.m', 'Student', 'STUDENT');

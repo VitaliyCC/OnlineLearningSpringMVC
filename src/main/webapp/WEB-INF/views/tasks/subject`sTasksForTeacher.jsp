@@ -26,6 +26,7 @@
                 <input class="form-control" id="myInput" type="text" placeholder="Search..">
                 <br>
             </div>
+            <%if((Integer)request.getAttribute("idT")!=-1){%>
             <div class="col-sm-3">
                 <br>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new">
@@ -33,43 +34,25 @@
                 </button>
                 <br>
             </div>
+            <%}%>
         </div>
     </div>
     <table class="table table-bordered">
         <thead>
         <%
             Subject subject = ((Subject) request.getAttribute("subject"));
-            String url;
-            String mainOperation;
-            String optionalOperation = null;
-            String colomnName = "";
-            if ((Integer) request.getAttribute("idSt") != -1) {
-                url = "/operation/report/show?id=" + (Integer) request.getAttribute("idSt");
-                mainOperation = "Create new report";
-                colomnName = "Your grade";
-            } else {
-                url = "/operation/task/show?id=" + (Integer) request.getAttribute("idT");
-                mainOperation = "Show reports";
-                optionalOperation = "Delete";
-            }%>
+        %>
         <tr>
             <th>Task name</th>
             <th>Subject id</th>
             <th>Task</th>
             <th>Max grade</th>
-            <th><%=colomnName%>
             </th>
         </tr>
         </thead>
         <tbody id="myTable">
         <%
             for (Task task : subject.getTaskList()) {
-                if ((Integer) request.getAttribute("idSt") != -1) {
-                    url = "/operation/report/show?id=" + (Integer) request.getAttribute("idSt");
-                } else {
-                    url = "/operation/task/show?id=" + (Integer) request.getAttribute("idT");
-                }
-                url += "&nameT=" + String.valueOf(task.getTaskName());
         %>
         <tr>
             <th><%=task.getTaskName()%>
@@ -82,16 +65,14 @@
             </th>
             <th><%=task.getMaxGrade()%>
             </th>
-            <th><%=task.getGrade()%>
-            </th>
-            <th><a class="link-secondary" href="<%=url%>"
-            ><%=mainOperation%>
-            </a>
+            <th><a class="link-secondary" href="/operation/task/show?id=<%=(Integer) request.getAttribute("idT")%>&nameT=<%=String.valueOf(task.getTaskName())%>"
+            >Show reports</a></th>
             <th>
                 <form class="form_" method="post" action="/operation/task/delete?name=<%=task.getTaskName()%>">
-                    <button type="submit" class="btn btn-outline-danger"><%=optionalOperation%>
+                    <button type="submit" class="btn btn-outline-danger">Delete
                     </button>
                 </form>
+            </th>
         </tr>
         <%}%>
         </tbody>
@@ -130,7 +111,7 @@
                     <div class="form-group">
                         <label for="maxGrade" class="form-label">Enter max grade: </label>
                         <input type="number" id="maxGrade" name="maxGrade" class="form-control" required
-                               minlength="4" maxlength="20"/>
+                               min="0" maxlength="50"/>
                         <div class="valid-feedback">Valid.</div>
                         <div class="invalid-feedback">Please fill this field correctly.</div>
                     </div>

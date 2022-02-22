@@ -30,7 +30,7 @@ public class ReviewController {
     }
 
     @GetMapping("")
-    @PreAuthorize("hasAnyAuthority('users:read','users:admin','users:check')")
+    @PreAuthorize("hasAnyAuthority('users:read','users:write','users:check')")
     public String workingWithReview(@RequestParam("id") Integer id, Model model) {
         model.addAttribute("student", studentDAO.showAllInfo(id));
 

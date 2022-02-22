@@ -58,7 +58,7 @@ public class AdminController {
 
         LOGGER.debug("Save new admin" + admin.toString());
         try {
-            user = new User(admin.getLogin(), null, Role.ADMIN);
+            user = new User(admin.getLogin(), admin.getPassword(), Role.ADMIN);
             LOGGER.debug("Save new user" + user.toString());
             adminDAO.save(admin);
             userDAO.save(user);

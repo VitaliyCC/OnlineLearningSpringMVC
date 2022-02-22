@@ -12,6 +12,7 @@ public class Student {
     private String surname;
     private String login;
     private String role;
+    private String password;
     private List<Subject> subjectList;
     private List<Report> reportList;
     private HashMap<Integer, List<Review>> reviewMap;
@@ -24,9 +25,18 @@ public class Student {
         this.id = id;
         this.name = name;
         this.patronymic = patronymic;
+        this.password=password;
         this.surname = surname;
         this.login = login;
         this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<Subject> getSubjectList() {

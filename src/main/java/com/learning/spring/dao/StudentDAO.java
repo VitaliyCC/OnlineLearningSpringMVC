@@ -128,7 +128,6 @@ public class StudentDAO {
         return true;
     }
 
-
     public Student showAllInfo(Integer id) {
         Student student = null;
         try (Connection connection = JDBC.getInstance().getConnection();
