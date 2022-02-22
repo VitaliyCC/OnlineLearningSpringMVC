@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<jsp:include page="/WEB-INF/views/templates/navAdmin.jsp"/>
+<jsp:include page="/WEB-INF/views/templates/navUser.jsp"/>
 
 <div class="container mt-3">
     <div class="row">
@@ -82,18 +82,12 @@
                 for (Review review : list1) {
             %>
             <tr>
-                <th><a class="link-secondary"
-                       href="/operation/review/show?id=<%=review.getReviewId()%>"
-                       ><%=review.getReviewId()%></a>
-                </th>
+                <th><%=review.getReviewId()%></th>
                 <th><a class="link-secondary"
                        href="/operation/teacher/show?id=<%=review.getTeacherId()%>"
                       ><%=review.getTeacherId()%></a>
                 </th>
-                <th><a class="link-secondary"
-                       href="/operation/report/show?id=<%=review.getReportId()%>"
-                      ><%=review.getReportId()%></a>
-                </th>
+                <th><%=review.getReportId()%></th>
                 <th ><%=review.getGrade()%></th>
                 <th ><%=review.getTimeReview()%></th>
             </tr>

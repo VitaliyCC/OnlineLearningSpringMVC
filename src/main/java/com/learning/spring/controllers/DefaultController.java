@@ -17,6 +17,8 @@ import com.learning.spring.security.dao.UserDAO;
 import com.learning.spring.security.model.Role;
 import com.learning.spring.security.model.User;
 
+import java.sql.SQLException;
+
 
 @Controller
 @RequestMapping("/")
@@ -46,10 +48,10 @@ public class DefaultController {
             Student student = studentDAO.showAllInfo(user.findStudent(studentDAO.showAll()));
 
             for (Subject subject : student.getSubjectList()) {
-                subject.setProgress(studentDAO.calculationSubjectProgress(student.getStudentId(),subject.getSubjectID()));
+                subject.setProgress(studentDAO.calculationSubjectProgress(student.getStudentId(), subject.getSubjectID()));
             }
 
-            model.addAttribute("student",student);
+            model.addAttribute("student", student);
 
             LOGGER.debug("Student logged in" + student.toString());
 
@@ -57,15 +59,14 @@ public class DefaultController {
         } else if (user.getRole().equals(Role.TEACHER)) {
             model.addAttribute("teacher", teacherDAO.showAllInfo(user.findTeacher(teacherDAO.showAll())));
 
-            LOGGER.debug("Teacher logged in " +user.toString());
+            LOGGER.debug("Teacher logged in " + user.toString());
 
             return "/hello/teachers";
         } else {
-            LOGGER.debug("Admin logged in " +user.toString());
+            LOGGER.debug("Admin logged in " + user.toString());
 
             return "hello/admins";
         }
 
     }
-
 }

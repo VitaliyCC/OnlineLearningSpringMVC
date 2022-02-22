@@ -43,7 +43,12 @@ public class ReportController {
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('users:read')")
     public String addNewReport(@ModelAttribute("report") Report report) throws SQLException {
-        reportDAO.save(report);
+        try {
+            reportDAO.save(report);
+        } catch (SQLException e) {
+            LOGGER.error("Incorrect report to save "+e);
+            throw new SQLException("Incorrect report to save ");
+        }
 
         LOGGER.debug("Save new report" + report.toString());
 

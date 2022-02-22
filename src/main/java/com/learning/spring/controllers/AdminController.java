@@ -53,7 +53,7 @@ public class AdminController {
 
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String addNewAdmin(@ModelAttribute("newAdmin") Admin admin) {
+    public String addNewAdmin(@ModelAttribute("newAdmin") Admin admin) throws SQLException {
         User user = null;
 
         LOGGER.debug("Save new admin" + admin.toString());
@@ -64,6 +64,7 @@ public class AdminController {
             userDAO.save(user);
         } catch (SQLException e) {
             LOGGER.error("Incorrect student to save "+e);
+            throw new SQLException("Incorrect student to save");
         }
 
 

@@ -17,7 +17,7 @@
 </head>
 <body>
 
-<jsp:include page="/WEB-INF/views/templates/navAdmin.jsp"/>
+<jsp:include page="/WEB-INF/views/templates/navUser.jsp"/>
 
 <div class="container mt-3">
     <div class="row">
@@ -36,7 +36,7 @@
             <button type="submit" class="btn btn-primary">
                 <a style="color: aliceblue" class="link-secondary"
                    href="/operation/review?id=<%=student.getStudentId()%>"
-                >Review for my reports</a></button>
+                >Review for reports</a></button>
 
         </div>
 
@@ -96,17 +96,12 @@
             </thead>
             <tbody>
             <%
-                int index = 0;
                 List<Report> reportList = student.getReportList();
                 for (Report report : reportList) {
 
             %>
             <tr>
-                <th><a class="link-secondary"
-                       href="/operation/report/show?id=<%=report.getReportId()%>"
-                ><%=report.getReportId()%>
-                </a>
-                </th>
+                <th><%=report.getReportId()%></th>
                 <th><%=report.getTaskName()%>
                 </th>
                 <th><%=report.getSolutions()%>
@@ -119,61 +114,6 @@
         </table>
     </div>
 </div>
-
-<!--<div class="modal" id="new">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-
-            <div class="modal-header">
-                <h4 class="modal-title">New Student</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-
-            <div class="modal-body">
-                <div class="col-sm-8">
-                    <h3 class="mt-4">Subjects studied by the student</h3>
-
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>Review id (click to see full info)</th>
-                            <th>Teacher id</th>
-                            <th>Grade</th>
-                            <th>Time review</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <%
-                            List<Review> reviewList = student.getReviewMap().get(index);
-                            for (Review review : reviewList) {
-                        %>
-                        <tr>
-
-                            <th><a class="link-secondary"
-                                   href="/operation/review/show?id=<%=review.getReviewId()%>"
-                            ><%= review.getReviewId()%>
-                            </a>
-                            </th>
-                            <th><a class="link-secondary"
-                                   href="/operation/teacher/show?id=<%=review.getTeacherId()%>"
-                            ><%=review.getTeacherId()%>
-                            </th>
-                            <th><%=review.getGrade()%>
-                            </th>
-                            <th><%=review.getTimeReview()%>
-                            </th>
-                        </tr>
-                        <%}%>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>-->
 <jsp:include page="/WEB-INF/views/templates/footer.jsp"/>
 
 </body>

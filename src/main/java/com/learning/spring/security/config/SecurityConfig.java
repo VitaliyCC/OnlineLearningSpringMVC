@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -47,15 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .deleteCookies("JSESSIONID")
                 .logoutSuccessUrl("/auth/login");
     }
-
-    /*@Bean
-    @Override
-    protected UserDetailsService userDetailsService() {
-        return new InMemoryUserDetailsManager(
-                User.builder().username("admin").password(passwordEncoder().encode("admin")).authorities(Role.ADMIN.getAuthorities()).build(),
-                User.builder().username("user").password(passwordEncoder().encode("user")).authorities(Role.STUDENT.getAuthorities()).build()
-        );
-    }*/
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

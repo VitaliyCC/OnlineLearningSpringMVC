@@ -55,6 +55,7 @@ public class ConnectingController {
 
         return "connectingPerson/editConnectingStudent";
     }
+
     @GetMapping("/T/edit")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String editConnectingTeacherIndex(@RequestParam("id") int id, Model model) {
@@ -69,12 +70,13 @@ public class ConnectingController {
 
     @PostMapping("/S/add")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String addNewConnectingStudent(@ModelAttribute("connectingS") ConnectingStudent connectingStudent) {
+    public String addNewConnectingStudent(@ModelAttribute("connectingS") ConnectingStudent connectingStudent) throws SQLException {
 
         try {
             connectingStudentDAO.save(connectingStudent);
         } catch (SQLException e) {
             LOGGER.error("Incorrect connecting student to save "+e);
+            throw new SQLException("Incorrect connecting student to save");
         }
 
         LOGGER.debug("Save new connectingStudent" + connectingStudent.toString());
@@ -83,11 +85,12 @@ public class ConnectingController {
     }
     @PostMapping("/T/add")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String addNewConnectingTeacher(@ModelAttribute("connectingT") ConnectingTeacher connectingTeacher) {
+    public String addNewConnectingTeacher(@ModelAttribute("connectingT") ConnectingTeacher connectingTeacher) throws SQLException {
         try {
             connectingTeacherDAO.save(connectingTeacher);
         } catch (SQLException e) {
             LOGGER.error("Incorrect connecting teacher to save "+e);
+            throw new SQLException("Incorrect connecting student to save ");
         }
 
         LOGGER.debug("Save new connectingTeacher" + connectingTeacher.toString());
@@ -113,6 +116,7 @@ public class ConnectingController {
 
         return "redirect:/operation/connectingPerson";
     }
+
     @PostMapping("/S/delete")
     @PreAuthorize("hasAnyAuthority('users:write')")
     public String deleteConnectingStudent(@RequestParam("id") int id) {

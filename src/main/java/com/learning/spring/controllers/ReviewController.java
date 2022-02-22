@@ -30,7 +30,7 @@ public class ReviewController {
     }
 
     @GetMapping("")
-    @PreAuthorize("hasAnyAuthority('users:read,users:admin','users:check')")
+    @PreAuthorize("hasAnyAuthority('users:read','users:admin','users:check')")
     public String workingWithReview(@RequestParam("id") Integer id, Model model) {
         model.addAttribute("student", studentDAO.showAllInfo(id));
 
@@ -59,7 +59,12 @@ public class ReviewController {
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('users:write','users:check')")
     public String addNewReview(@ModelAttribute("review") Review review) throws SQLException {
-        reviewDAO.save(review);
+        try {
+            reviewDAO.save(review);
+        } catch (SQLException e) {
+            LOGGER.error("Incorrect review to save "+e);
+            throw new SQLException("Incorrect review to save ");
+        }
 
         LOGGER.debug("Save new review" + review.toString());
 

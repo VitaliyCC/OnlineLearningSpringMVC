@@ -26,9 +26,7 @@
                 <br>
             </div>
             <div class="col-sm-4">
-                <h2>Operation on student</h2>
                 <br>
-
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new">
                     Add new student
                 </button>

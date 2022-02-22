@@ -62,11 +62,12 @@ public class SubjectController {
 
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String addNewSubject(@ModelAttribute("subject") Subject subject) {
+    public String addNewSubject(@ModelAttribute("subject") Subject subject) throws SQLException {
         try {
             subjectDAO.save(subject);
         } catch (SQLException e) {
             LOGGER.error("Incorrect student to save "+ e);
+            throw new SQLException("Incorrect student to save ");
         }
 
         LOGGER.debug("Save new subject" + subject.toString());

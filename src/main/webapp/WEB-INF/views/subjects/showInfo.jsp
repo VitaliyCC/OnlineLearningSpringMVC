@@ -17,7 +17,7 @@
 </head>
 <body>
 
-<jsp:include page="/WEB-INF/views/templates/navAdmin.jsp"/>
+<jsp:include page="/WEB-INF/views/templates/navUser.jsp"/>
 
 <div class="container mt-3">
     <div class="row">
@@ -105,7 +105,7 @@
             <tr>
                 <!--<th scope="row">1</th>-->
                 <th><a class="link-secondary"
-                       href="/operation/task/show?id=<%=task.getTaskName()%>"><%=task.getTaskName()%></a>
+                       href="/operation/task/show?id=-1&nameT=<%=task.getTaskName()%>"><%=task.getTaskName()%></a>
                 </th>
                 <th ><%=task.getSubject()%></th>
                 <th ><%=task.getMaxGrade()%></th>

@@ -67,7 +67,7 @@ public class TeacherController {
 
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('users:write')")
-    public String addNewTeacher(@ModelAttribute("teacher") Teacher teacher) {
+    public String addNewTeacher(@ModelAttribute("teacher") Teacher teacher) throws SQLException {
         User user = null;
 
         try {
@@ -76,6 +76,7 @@ public class TeacherController {
             userDAO.save(user);
         } catch (SQLException e) {
             LOGGER.error("Incorrect student to save "+e);
+            throw new SQLException("Incorrect student to save ");
         }
 
         LOGGER.debug("Save new teacher" + teacher.toString());

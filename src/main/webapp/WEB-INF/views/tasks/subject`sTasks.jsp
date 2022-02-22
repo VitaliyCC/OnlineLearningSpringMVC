@@ -19,35 +19,46 @@
 <div class="container">
 
     <div class="container">
-        <div class="col-sm-7">
-            <h2>Search in the table</h2>
-            <p>Search for symbols in all columns:</p>
-            <input class="form-control" id="myInput" type="text" placeholder="Search..">
-            <br>
+        <div class="row">
+            <div class="col-sm-7">
+                <h2>Search in the table</h2>
+                <p>Search for symbols in all columns:</p>
+                <input class="form-control" id="myInput" type="text" placeholder="Search..">
+                <br>
+            </div>
+            <div class="col-sm-3">
+                <br>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new">
+                    Add new task
+                </button>
+                <br>
+            </div>
         </div>
-
     </div>
     <table class="table table-bordered">
         <thead>
         <%
             Subject subject = ((Subject) request.getAttribute("subject"));
             String url;
-            String operation;
-            String colomnName="";
+            String mainOperation;
+            String optionalOperation = null;
+            String colomnName = "";
             if ((Integer) request.getAttribute("idSt") != -1) {
                 url = "/operation/report/show?id=" + (Integer) request.getAttribute("idSt");
-                operation = "Create new report";
+                mainOperation = "Create new report";
                 colomnName = "Your grade";
             } else {
                 url = "/operation/task/show?id=" + (Integer) request.getAttribute("idT");
-                operation = "Swow reports";
+                mainOperation = "Show reports";
+                optionalOperation = "Delete";
             }%>
         <tr>
             <th>Task name</th>
             <th>Subject id</th>
             <th>Task</th>
             <th>Max grade</th>
-            <th><%=colomnName%></th>
+            <th><%=colomnName%>
+            </th>
         </tr>
         </thead>
         <tbody id="myTable">
@@ -55,10 +66,8 @@
             for (Task task : subject.getTaskList()) {
                 if ((Integer) request.getAttribute("idSt") != -1) {
                     url = "/operation/report/show?id=" + (Integer) request.getAttribute("idSt");
-                    operation = "Create new report";
                 } else {
                     url = "/operation/task/show?id=" + (Integer) request.getAttribute("idT");
-                    operation = "Swow reports";
                 }
                 url += "&nameT=" + String.valueOf(task.getTaskName());
         %>
@@ -76,12 +85,65 @@
             <th><%=task.getGrade()%>
             </th>
             <th><a class="link-secondary" href="<%=url%>"
-            ><%=operation%>
+            ><%=mainOperation%>
             </a>
+            <th>
+                <form class="form_" method="post" action="/operation/task/delete?name=<%=task.getTaskName()%>">
+                    <button type="submit" class="btn btn-outline-danger"><%=optionalOperation%>
+                    </button>
+                </form>
         </tr>
         <%}%>
         </tbody>
     </table>
+</div>
+
+<div class="modal" id="new">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">New Task</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form method="POST" action="/operation/task/add"
+                      class="needs-validation" novalidate>
+                    <div class="form-group">
+                        <label for="taskName" class="form-label">Enter task name: </label>
+                        <input type="text" id="taskName" name="taskName" class="form-control" required
+                               minlength="5"
+                               maxlength="30"/>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill this field correctly.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject" class="form-label">Enter link on subject: </label>
+                        <input type="text" id="subject" name="subject" class="form-control" required
+                               minlength="15" maxlength="50"/>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill this field correctly.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="maxGrade" class="form-label">Enter max grade: </label>
+                        <input type="number" id="maxGrade" name="maxGrade" class="form-control" required
+                               minlength="4" maxlength="20"/>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill this field correctly.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectId" class="form-label">Subject id: </label>
+                        <input type="number" id="subjectId" name="subjectId" class="form-control"
+                               value="<%=subject.getSubjectID()%>" readonly/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <jsp:include page="/WEB-INF/views/templates/footer.jsp"/>

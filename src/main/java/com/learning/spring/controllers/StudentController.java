@@ -37,7 +37,7 @@ public class StudentController {
     }
 
     @GetMapping("/show")
-    @PreAuthorize("hasAnyAuthority('users:check','users:write')")
+    @PreAuthorize("hasAnyAuthority('users:check','users:write','users:read')")
     public String showStudentIndex(@RequestParam("id") int id, Model model) {
         Student student = studentDAO.showAllInfo(id);
 
@@ -67,7 +67,7 @@ public class StudentController {
     public String addNewStudent(@RequestParam("name") String name,
                                 @RequestParam("surname") String surname,
                                 @RequestParam("patronymic") String patronymic,
-                                @RequestParam("login") String login) {
+                                @RequestParam("login") String login) throws SQLException {
         Student student = new Student();
         student.setName(name);
         student.setSurname(surname);
@@ -79,6 +79,7 @@ public class StudentController {
             userDAO.save(user);
         } catch (SQLException e) {
             LOGGER.error("Incorrect student to save "+e);
+            throw new SQLException("Incorrect student to save ");
         }
 
         LOGGER.debug("Save new student" + student.toString());

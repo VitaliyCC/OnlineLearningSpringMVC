@@ -50,12 +50,10 @@ public class TaskDAO {
                 connection.prepareStatement("INSERT INTO TASK (TASK_NAME, SUBJECT_ID, SUBJECT, MAX_GRADE) " +
                         "VALUES (?, ?, ?, ?)");
 
-        Statement statement = connection.createStatement();
-
         preparedStatement.setString(1, task.getTaskName());
         preparedStatement.setInt(2, task.getSubjectId());
         preparedStatement.setString(3, task.getSubject());
-        preparedStatement.setInt(4, task.getGrade());
+        preparedStatement.setInt(4, task.getMaxGrade());
         preparedStatement.executeUpdate();
     }
 
@@ -88,5 +86,19 @@ public class TaskDAO {
             LOGGER.error("Error trying to calculation subject progress" + e);
         }
         return result;
+    }
+
+    public Boolean delete(String id) {
+        try (Connection connection = JDBC.getInstance().getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("delete from TASK where TASK_NAME =?");
+        ) {
+            preparedStatement.setString(1, id);
+            preparedStatement.execute();
+
+        } catch (SQLException e) {
+            LOGGER.error("Error trying to delete task with name " + id + "-" + e);
+        }
+        return true;
     }
 }
