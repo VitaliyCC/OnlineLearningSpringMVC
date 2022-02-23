@@ -9,7 +9,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 
-
 import javax.servlet.*;
 
 public class MySpringMvcDispatcherSerlvetIntitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -29,7 +28,7 @@ public class MySpringMvcDispatcherSerlvetIntitializer extends AbstractAnnotation
     }
 
     @Override
-    public void onStartup(ServletContext servletContext) {
+    public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext appContext = new AnnotationConfigWebApplicationContext();
         appContext.register(SpringConfig.class);
 
@@ -37,6 +36,5 @@ public class MySpringMvcDispatcherSerlvetIntitializer extends AbstractAnnotation
                 "SpringDispatcher", new DispatcherServlet(appContext));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
-
     }
 }

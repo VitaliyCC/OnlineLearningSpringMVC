@@ -111,7 +111,6 @@ public class AdminDAO {
         preparedStatement.setString(4, admin.getSurname());
         preparedStatement.setString(5, admin.getPatronymic());
 
-        System.out.println(Admin.getCountAdmins() + "" + User.getCountUsers() + "" + admin.getName() + "" + admin.getSurname() + "" + admin.getPatronymic());
         preparedStatement.executeUpdate();
         return true;
     }
